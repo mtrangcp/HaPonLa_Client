@@ -60,7 +60,9 @@ const Category_Screens = () => {
           <Icon name="person" size={25} />
         </TouchableOpacity>
       </View>
+      <View></View>
     </View>
+    
   );
 };
 
