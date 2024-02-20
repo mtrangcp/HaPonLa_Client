@@ -116,11 +116,7 @@ const Signup_Screens = () => {
                 <Text style={styles.text2}>Already have an account?</Text>
                 <Text onPress={() => { navigation.navigate('Login_Screens') }} style={styles.text4}> Sign In</Text>
             </View>
-           <Text>sạkdkasd</Text>
-           <Text>sạkdkasd</Text>
-           <Text>sạkdkasd</Text>
-           <Text>sạkdkasd</Text>
-           
+        
         </ScrollView>
     );
 };

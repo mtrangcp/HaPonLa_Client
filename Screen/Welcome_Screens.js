@@ -6,7 +6,7 @@ const Welcome_Screens = ({ navigation }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       // Chuyển sang màn hình khác sau 3 giây
-      navigation.navigate('Category_Screens');
+      navigation.navigate('Login_Screens');
     }, 3000);
 
     // Clear timer khi component unmount
