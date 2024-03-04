@@ -1,18 +1,49 @@
-import { StyleSheet, Text, View, Image, TextInput ,TouchableHighlight  } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp, listenOrientationChange as lor, removeOrientationListener as rol } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login_Screens = () => {
   const navigation = useNavigation();
-  
-  
   const [Username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handlePress = () => {
-    // Xử lý khi người dùng nhấn nút (ví dụ: kiểm tra mật khẩu)
-    console.log('Mật khẩu:', password);
-  };
+  const dangnhap = () => {
+    // kiểm tra hợp lệ dữ liệu
+    if (Username.length == 0) {
+      Alert.alert('', "Chưa nhập Username"); return;
+    }
+    if (password.length == 0) {
+      alert("Chưa nhập Password"); return; // lệnh return để thoát hàm login
+    }
+    // thực hiện fetch để lấy dữ liệu về
+    let url_check_login = "http://localhost:3000/api/user/dn=" + Username;
+
+    fetch(url_check_login)
+      .then((res) => { return res.json(); })
+      .then(async (res_login) => {
+        if (res_login.length != 1) {
+          alert("Sai tài khoản hoặc lỗi trùng lặp dữ liệu");
+          return;
+        } else {
+          // số lượng lấy được 1 bản ghi ==> kiểm tra password
+          let objU = res_login[0];
+          if (objU.password != password) {
+            alert("Sai mật khẩu"); return;
+          } else {
+            // đúng password: lưu thông tin vào storage
+            try {
+              await AsyncStorage.setItem('Login_Screens', JSON.stringify(objU));
+              // chuyển màn hình sang màn hình home
+              navigation.navigate('Account_Screens');
+            } catch (e) {
+              // saving error
+              console.log(e);
+            }
+          }
+        }
+      })
+  }
 
   return (
     <View style={styles.container}>
@@ -23,49 +54,54 @@ const Login_Screens = () => {
       />
       <Text style={styles.text}>Welcome to HaPonLa</Text>
       <Text style={styles.text2}>Sign in to continue</Text>
+      {/* User */}
       <View style={styles.input}>
         <Image
           source={require('../Image/username.png')}
           style={styles.i1}
           resizeMode="contain"
         />
-        <TextInput style={styles.textinput}
+        <TextInput
+          style={styles.textinput}
           placeholder="Your Username"
-
-          onChangeText={(inputUsername) => setUsername(inputUsername)}
-
+          onChangeText={(text) => setUsername(text)}
+          value={Username}
         />
 
       </View>
-
+      {/* Pass */}
       <View style={styles.input}>
         <Image
           source={require('../Image/mk.png')}
           style={styles.i1}
           resizeMode="contain"
         />
-        <TextInput style={styles.textinput}
+        <TextInput
+          style={styles.textinput}
           placeholder="Password"
           secureTextEntry={true}
-          onChangeText={(inputPassword) => setPassword(inputPassword)}
-          value={password}
+          onChangeText={(text) => setPassword(text)} 
+          value={password} 
         />
 
       </View>
 
-      <TouchableHighlight >
-        <View style={styles.button}>
-          <Text style={{color:"#fff",fontWeight: 'bold',fontSize: 18,}} >Sign In</Text>
+      <TouchableHighlight
+        onPress={dangnhap}
+        style={styles.button}
+      >
+        <View >
+          <Text style={{ color: "#fff", fontWeight: 'bold', fontSize: 18, }} >Sign In</Text>
         </View>
       </TouchableHighlight>
 
-      <Text  style={styles.text3}>Forgot Password ?</Text>
-      <View style={{flexDirection: 'row',}}>
-      <Text style={styles.text2}>Don’t have a account?</Text>
-      
-      <Text onPress={() => { navigation.navigate('Signup_Screens') }}   style={styles.text4}> Register</Text>
-      
-      
+      <Text style={styles.text3}>Forgot Password ?</Text>
+      <View style={{ flexDirection: 'row', }}>
+        <Text style={styles.text2}>Don’t have a account?</Text>
+
+        <Text onPress={() => { navigation.navigate('Signup_Screens') }} style={styles.text4}> Register</Text>
+
+
       </View>
 
     </View>
@@ -142,6 +178,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#9DDC2D',
     padding: 10,
-    justifyContent:"center"
+    justifyContent: "center"
   },
 })
