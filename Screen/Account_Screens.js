@@ -2,6 +2,7 @@ import { ScrollView, StyleSheet, Text, View, Image, TouchableOpacity, ActivityIn
 import React, { useState } from "react";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { SafeAreaView } from "react-native-safe-area-context";
+import User_Information_Screens from "./User_Information_Screens";
 
 
 const Account_Screens = () => {
@@ -83,7 +84,7 @@ const Account_Screens = () => {
                 >
                     <View style={{flexDirection:"row",alignItems:"center"}}>
                         <Image
-                            source={require('../Image/order.jpg')}
+                            source={require('../Image/discount.jpg')}
                             style={styles.I1}
                             resizeMode="contain"
                         />
@@ -116,6 +117,8 @@ const Account_Screens = () => {
                     />
                 </TouchableOpacity>
             </View>
+
+            
         </View>
 
 

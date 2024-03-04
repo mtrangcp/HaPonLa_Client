@@ -64,7 +64,7 @@ const Signup_Screens = () => {
 
             <View style={styles.input}>
                 <Image
-                    source={require('../Image/email.png')}
+                    source={require('../Image/email2.png')}
                     style={styles.i1}
                     resizeMode="contain"
                 />
