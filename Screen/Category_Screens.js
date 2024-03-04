@@ -1,39 +1,36 @@
 import { ScrollView, StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator, FlatList, Alert, Modal, Button, TextInput, TouchableHighlight } from "react-native";
 import React, { useState } from "react";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
 
-const Category_Screens = () => {
+const Category_Screens = ( ) => {
+  const navigation = useNavigation();
+
   const [searchQuery, setSearchQuery] = useState('');
 
   const [selectedCategory, setSelectedCategory] = useState('Tình cảm'); // Thể loại được chọn
 
-  // Danh sách các sản phẩm sách
-  // const bookData = {
-  //   'Tình cảm': ['Sách 1', 'Sách 2', 'Sách 3'],
-  //   'Trinh thám': ['Sách 4', 'Sách 5', 'Sách 6'],
-  //   'Manga': ['Sách 7', 'Sách 8', 'Sách 9']
-  // };
   const bookData = {
     'Tình cảm': [
-      { id: 1, name: 'Sách 1', image: require('../Image/logo.jpg'), price: 100 },
-      { id: 2, name: 'Sách 2', image: require('../Image/logo.jpg'), price: 120 },
-      { id: 3, name: 'Sách 3', image: require('../Image/logo.jpg'), price: 90 }
+      { id: 1, name: 'Sách 1', image: require('../Image/tests1.jpg'), price: 100 },
+      { id: 2, name: 'Sách 2', image: require('../Image/tests1.jpg'), price: 120 },
+      { id: 3, name: 'Sách 3', image: require('../Image/tests1.jpg'), price: 90 }
     ],
     'Trinh thám': [
-      { id: 4, name: 'Sách 4', image: require('../Image/logo.jpg'), price: 110 },
-      { id: 5, name: 'Sách 5', image: require('../Image/logo.jpg'), price: 130 },
-      { id: 6, name: 'Sách 6', image: require('../Image/logo.jpg'), price: 95 }
+      { id: 4, name: 'Sách 4', image: require('../Image/tests1.jpg'), price: 110 },
+      { id: 5, name: 'Sách 5', image: require('../Image/tests1.jpg'), price: 130 },
+      { id: 6, name: 'Sách 6', image: require('../Image/tests1.jpg'), price: 95 }
     ],
     'Manga': [
-      { id: 7, name: 'Sách 7', image: require('../Image/logo.jpg'), price: 80 },
-      { id: 8, name: 'Sách 8', image: require('../Image/logo.jpg'), price: 100 },
-      { id: 9, name: 'Sách 9', image: require('../Image/logo.jpg'), price: 85 }
+      { id: 7, name: 'Sách 7', image: require('../Image/tests1.jpg'), price: 80 },
+      { id: 8, name: 'Sách 8', image: require('../Image/tests1.jpg'), price: 100 },
+      { id: 9, name: 'Sách 9', image: require('../Image/tests1.jpg'), price: 85 }
     ]
   };
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate('BookDetail', { book: item })}
+      onPress={() => navigation.navigate('Detail_Screens', { book: item })}
       style={{ padding: 10, flexDirection: 'row', alignItems: 'center' }}>
       <Image source={item.image} style={{ width: 50, height: 70, marginRight: 10 }} />
       <Text>{item.name}</Text>
@@ -64,9 +61,10 @@ const Category_Screens = () => {
 
           <TextInput
             placeholder="Search Product"
-            onChangeText={Text}
+            onChangeText={text => setSearchQuery(text)} 
             value={searchQuery}
           />
+
         </View>
 
         <TouchableOpacity style={{ marginRight: wp('4%') }}>
