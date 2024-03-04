@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp, listenOrientationChange as lor, removeOrientationListener as rol } from 'react-native-responsive-screen';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import { useNavigation } from '@react-navigation/native'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login_Screens = () => {
   const navigation = useNavigation();
@@ -17,32 +17,40 @@ const Login_Screens = () => {
       alert("Chưa nhập Password"); return; // lệnh return để thoát hàm login
     }
     // thực hiện fetch để lấy dữ liệu về
-    let url_check_login = "http://localhost:3000/api/user/dn=" + Username;
-
+    let url_check_login = "http://192.168.1.9:3000/api/user?username=" + Username;
+    
     fetch(url_check_login)
-      .then((res) => { return res.json(); })
-      .then(async (res_login) => {
-        if (res_login.length != 1) {
-          alert("Sai tài khoản hoặc lỗi trùng lặp dữ liệu");
-          return;
-        } else {
-          // số lượng lấy được 1 bản ghi ==> kiểm tra password
-          let objU = res_login[0];
-          if (objU.password != password) {
-            alert("Sai mật khẩu"); return;
-          } else {
-            // đúng password: lưu thông tin vào storage
-            try {
-              await AsyncStorage.setItem('Login_Screens', JSON.stringify(objU));
-              // chuyển màn hình sang màn hình home
-              navigation.navigate('Account_Screens');
-            } catch (e) {
-              // saving error
-              console.log(e);
-            }
-          }
-        }
-      })
+  .then((res) => res.json())
+  .then(async (res_login) => {
+    if (res_login.status !== 1 || !res_login.data || res_login.data.length === 0) {
+      Alert.alert("", "Sai Username");
+      return;
+    }
+
+    // Tìm người dùng trong mảng dữ liệu
+    const user = res_login.data.find(user => user.username === Username && user.passwork === password);
+    if (!user) {
+      alert("Sai mật khẩu");
+      return;
+    }
+
+    // Lưu thông tin người dùng vào AsyncStorage
+    try {
+      await AsyncStorage.setItem('Login_Screens', JSON.stringify(user));
+      // Chuyển hướng người dùng đến màn hình tương ứng
+      navigation.navigate('Account_Screens');
+    } catch (e) {
+      // Xử lý lỗi khi lưu thông tin
+      console.log(e);
+    }
+  })
+  .catch((error) => {
+    // Xử lý lỗi khi gọi API
+    console.error(error);
+  });
+
+    
+
   }
 
   return (
