@@ -18,7 +18,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        
+        <Stack.Screen options={{ headerShown: false }} name="Category_Screens" component={Category_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Welcome" component={Welcome_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Login_Screens" component={Login_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Address_Screens" component={Address_Screens} />
@@ -29,7 +29,7 @@ function App() {
         
         
         <Stack.Screen options={{ headerShown: false }} name="Signup_Screens" component={Signup_Screens} />
-        <Stack.Screen options={{ headerShown: false }} name="Category_Screens" component={Category_Screens} />
+        
         <Stack.Screen options={{ headerShown: false }} name="Detail_Screens" component={Detail_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Order_Details_Screens" component={Order_Details_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="History_Screens" component={History_Screens} />
