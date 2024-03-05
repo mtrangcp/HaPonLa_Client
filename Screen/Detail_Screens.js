@@ -2,17 +2,20 @@ import { ScrollView, StyleSheet, Text, View, Image, TouchableOpacity, ActivityIn
 import React, { useState } from "react";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-const Detail_Screens = ({route}) => {
+const Detail_Screens = ({route, navigation}) => {
     const [searchQuery, setSearchQuery] = useState('');
 
     const { book } = route.params;
 
+    const handleBackPress = () => {
+        navigation.goBack();
+    };
+
     return (
         <View style={styles.container}>
-            {/* Search */}
             <View style={styles.V1}>
 
-                <TouchableOpacity style={{ marginRight: 20 }}>
+                <TouchableOpacity style={{ marginRight: 280 }} onPress={handleBackPress}>
                     <Image
                         source={require('../Image/back.png')}
                         style={[styles.i1, { tintColor: '#9DDC2D' }]}
@@ -20,7 +23,7 @@ const Detail_Screens = ({route}) => {
                     />
                 </TouchableOpacity>
 
-                <View style={styles.search}>
+                {/* <View style={styles.search}>
                     <Image
                         source={require('../Image/search.jpg')}
                         style={styles.i2}
@@ -34,7 +37,7 @@ const Detail_Screens = ({route}) => {
                     />
 
 
-                </View>
+                </View> */}
 
                 <TouchableOpacity style={{ marginRight: wp('4%') }}>
                     <Image
