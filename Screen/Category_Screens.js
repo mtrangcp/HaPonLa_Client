@@ -10,6 +10,9 @@ const Category_Screens = ( ) => {
 
   const [selectedCategory, setSelectedCategory] = useState('Tình cảm'); // Thể loại được chọn
 
+  const [filteredBooks, setFilteredBooks] = useState([]);
+
+
   const bookData = {
     'Tình cảm': [
       { id: 1, name: 'Sách 1', image: require('../Image/tests1.jpg'), price: 100 },
@@ -38,6 +41,15 @@ const Category_Screens = ( ) => {
     </TouchableOpacity>
   );
 
+  
+  const handleSearch = () => {
+    const filteredBooks = bookData[selectedCategory].filter(book =>
+        book.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredBooks(filteredBooks);
+  };
+
+
 
   return (
     <View style={styles.container}>
@@ -45,11 +57,11 @@ const Category_Screens = ( ) => {
       <View style={styles.V1}>
 
         <TouchableOpacity style={{ marginRight: 20 }}>
-          <Image
+          {/* <Image
             source={require('../Image/back.png')}
             style={[styles.i1, { tintColor: '#9DDC2D' }]}
             resizeMode="contain"
-          />
+          /> */}
         </TouchableOpacity>
 
         <View style={styles.search}>
@@ -63,6 +75,7 @@ const Category_Screens = ( ) => {
             placeholder="Search Product"
             onChangeText={text => setSearchQuery(text)} 
             value={searchQuery}
+            onSubmitEditing={handleSearch}
           />
 
         </View>
@@ -103,7 +116,7 @@ const Category_Screens = ( ) => {
 
         {/* Hiển thị danh sách sách dựa trên thể loại được chọn */}
         <FlatList
-          data={bookData[selectedCategory]}
+          data={filteredBooks.length > 0 ? filteredBooks : bookData[selectedCategory]}
           keyExtractor={(item, index) => index.toString()}
           renderItem={renderItem}
         />
