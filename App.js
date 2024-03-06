@@ -10,6 +10,7 @@ import Order_Details_Screens from './Screen/Order_Details_Screens';
 import Account_Screens from './Screen/Account_Screens';
 import User_Information_Screens from './Screen/User_Information_Screens';
 import Address_Screens from './Screen/Address_Screens';
+import Change_Password from './Screen/Change_Password';
 
 
 const Stack = createNativeStackNavigator();
@@ -19,19 +20,20 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator>
       <Stack.Screen options={{ headerShown: false }} name="Welcome" component={Welcome_Screens} />
-      <Stack.Screen options={{ headerShown: false }} name="Login_Screens" component={Login_Screens} />
-      <Stack.Screen options={{ headerShown: false }} name="Address_Screens" component={Address_Screens} />
+      <Stack.Screen options={{ headerShown: false }} name="Change_Password" component={Change_Password} />
+        
+        <Stack.Screen options={{ headerShown: false }} name="Signup_Screens" component={Signup_Screens} />
+        <Stack.Screen options={{ headerShown: false }} name="History_Screens" component={History_Screens} />
+
+        <Stack.Screen options={{ headerShown: false }} name="Login_Screens" component={Login_Screens} />
+        <Stack.Screen options={{ headerShown: false }} name="Address_Screens" component={Address_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="User_Information_Screens" component={User_Information_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Account_Screens" component={Account_Screens} />
 
-
-        
-        
-        <Stack.Screen options={{ headerShown: false }} name="Signup_Screens" component={Signup_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Category_Screens" component={Category_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Detail_Screens" component={Detail_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Order_Details_Screens" component={Order_Details_Screens} />
-        <Stack.Screen options={{ headerShown: false }} name="History_Screens" component={History_Screens} />
+
 
 
         {/* Thêm các Screen khác nếu cần */}

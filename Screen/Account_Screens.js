@@ -1,11 +1,24 @@
-import { ScrollView, StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator, FlatList, Alert, Modal, Button, TextInput, TouchableHighlight } from "react-native";
-import React, { useState } from "react";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { SafeAreaView } from "react-native-safe-area-context";
-import User_Information_Screens from "./User_Information_Screens";
+import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight,TouchableOpacity ,Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp, listenOrientationChange as lor, removeOrientationListener as rol } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Account_Screens = () => {
+    const navigation = useNavigation();
+    const dangxuat = async () =>{
+        try {
+            // Xóa dữ liệu lưu trữ đăng nhập
+            await AsyncStorage.removeItem('Login_Screens');
+            // Chuyển màn hình đến màn hình đăng nhập
+            navigation.navigate('Login_Screens');
+          } catch (error) {
+            console.error('Lỗi khi đăng xuất:', error);
+          }
+        
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.V1}>
@@ -61,6 +74,7 @@ const Account_Screens = () => {
                 </TouchableOpacity>
                 {/* đổi mật khẩu */}
                 <TouchableOpacity
+                onPress={() => navigation.navigate('Change_Password')}
                     style={styles.B1}
                 >
                     <View style={{flexDirection:"row",alignItems:"center"}}>
@@ -100,6 +114,7 @@ const Account_Screens = () => {
                 {/* đăng xuất */}
                 <TouchableOpacity
                     style={styles.B1}
+                    onPress={dangxuat}
                 >
                     <View style={{flexDirection:"row",alignItems:"center"}}>
                         <Image

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp, listenOrientationChange as lor, removeOrientationListener as rol } from 'react-native-responsive-screen';
-import { useNavigation } from '@react-navigation/native'; 
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login_Screens = () => {
   const navigation = useNavigation();
@@ -18,40 +18,42 @@ const Login_Screens = () => {
     }
     // thực hiện fetch để lấy dữ liệu về
     let url_check_login = "http://192.168.1.9:3000/api/user?username=" + Username;
-    
+
     fetch(url_check_login)
-  .then((res) => res.json())
-  .then(async (res_login) => {
-    if (res_login.status !== 1 || !res_login.data || res_login.data.length === 0) {
-      Alert.alert("", "Sai Username");
-      return;
-    }
-
-    // Tìm người dùng trong mảng dữ liệu
-    const user = res_login.data.find(user => user.username === Username && user.passwork === password);
-    if (!user) {
-      alert("Sai mật khẩu");
-      return;
-    }
-
-    // Lưu thông tin người dùng vào AsyncStorage
-    try {
-      await AsyncStorage.setItem('Login_Screens', JSON.stringify(user));
-      // Chuyển hướng người dùng đến màn hình tương ứng
-      navigation.navigate('Account_Screens');
-    } catch (e) {
-      // Xử lý lỗi khi lưu thông tin
-      console.log(e);
-    }
-  })
-  .catch((error) => {
-    // Xử lý lỗi khi gọi API
-    console.error(error);
-  });
-
+      .then((res) => res.json())
+      .then(async (res_login) => {
+        if (res_login.status !== 1 || !res_login.data || res_login.data.length === 0) {
+          // Alert.alert("", "Sai Username");
+          return;
+        } else {
+          // Tìm người dùng trong mảng dữ liệu
+          const user = res_login.data.find(user => user.username === Username && user.passwork === password);
+          
+          if (!user) {
+           Alert.alert("","Sai mật khẩu hoặc mk");
+            return;
+          }
     
+          // Lưu thông tin người dùng vào AsyncStorage
+          try {
+            await AsyncStorage.setItem('Login_Screens', JSON.stringify(user));
+            // Chuyển hướng người dùng đến màn hình tương ứng
+            navigation.navigate('Account_Screens');
+          } catch (e) {
+            // Xử lý lỗi khi lưu thông tin
+            console.log(e);
+          }
+        }
+      })
+      .catch((error) => {
+        // Xử lý lỗi khi gọi API
+        console.error(error);
+      });
+
 
   }
+
+
 
   return (
     <View style={styles.container}>
@@ -88,8 +90,8 @@ const Login_Screens = () => {
           style={styles.textinput}
           placeholder="Password"
           secureTextEntry={true}
-          onChangeText={(text) => setPassword(text)} 
-          value={password} 
+          onChangeText={(text) => setPassword(text)}
+          value={password}
         />
 
       </View>
