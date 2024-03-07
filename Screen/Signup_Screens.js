@@ -1,7 +1,9 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, ScrollView } from 'react-native';
-import React, { useState } from 'react';
+import { Platform, KeyboardAvoidingView, StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+
 
 const Signup_Screens = () => {
     const navigation = useNavigation();
@@ -11,113 +13,222 @@ const Signup_Screens = () => {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
+    
+
+    const dangky = () => {
+
+        if (Username.length === 0 || Fullname.length === 0 || password.length === 0 || email.length === 0 || phone.length === 0 || address.length === 0) {
+            Alert.alert('', 'Vui lòng điền đầy đủ thông tin');
+            return;
+        }
+        // tạo đối tượng dữ liệu
+        let user = {
+            username: Username,
+            fullname: Fullname,
+            passwork: password,
+            email: email,
+            phone: phone,
+            points: 0,
+            role: 'USER',
+            gender: 'MALE',
+            active: true,
+            
+        };
+        let url_api = 'http://192.168.1.9:3000/api/user/add/';
+        fetch(url_api, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(user)
+        })
+            .then((res) => {
+
+                if (res.status == 200)
+                    Alert.alert("Tạo tài khoản thành công")
+                navigation.navigate('Login_Screens');
+            })
+            .catch((ex) => {
+                console.log(ex);
+            });
+    }
+
+    // const dangky = async () => {
+    //     try {
+    //         const newUser = {
+    //             username: 'example_username',
+    //             passwork: 'example_password',
+    //             email: 'example@example.com',
+    //             phone: '123456789',
+    //             fullname: 'Example User',
+    //             gender: 'MALE', // hoặc 'FEMALE', 'OTHER'
+    //             active: true,
+    //             role: 'USER', // hoặc 'ADMIN'
+    //             points: 0
+    //             // Các trường khác bạn có thể thêm tùy theo cần thiết
+    //         };
+
+    //         const response = await axios.post('http://192.168.1.9:3000/api/user/add/', newUser);
+
+    //         console.log('User created successfully:', response.data);
+    //     } catch (error) {
+    //         console.error('Error creating user:', error);
+    //     }
+    // };
+    // // Gọi hàm để tạo người dùng mới
+    // dangky();
+
+    // const dangky = async () => {
+    //     try {
+    //         console.log(Fullname)
+    //         const response = await fetch('http://192.168.1.9:3000/api/User/add/', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({
+    //                 username: Username,
+    //                 passwork: password,
+    //                 email: email,
+    //                 phone: password,
+    //                 fullname: Fullname,
+    //                 gender: 'MALE',
+    //                 active: true,
+    //                 role: 'USER',
+    //                 points: 0 // Thêm các trường khác nếu cần
+                    
+    //             }),
+    //         });
+    //         console.log(response)
+    //         if (!response.ok) {
+    //             throw new Error('Error creating user');
+    //         }
+    //         const responseData = await response.json();
+    //         // console.log('User created successfully:', responseData);
+    //     } catch (error) {
+    //         console.error('Error:', error.message);
+    //     }
+    // };
+
+    // // Gọi hàm createUser để tạo user
+    // dangky();
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <Image
-                source={require('../Image/logo.jpg')}
-                style={styles.logo}
-                resizeMode="contain"
-            />
-            <Text style={styles.text}>Let’s Get Started</Text>
-            <Text style={styles.text2}>Create a new account</Text>
-            {/* ... Your other components ... */}
-            <View style={styles.input}>
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always">
                 <Image
-                    source={require('../Image/username.png')}
-                    style={styles.i1}
+                    source={require('../Image/logo.jpg')}
+                    style={styles.logo}
                     resizeMode="contain"
                 />
-                <TextInput
-                    style={styles.textinput}
-                    placeholder="Username"
-                    onChangeText={(inputUsername) => setUsername(inputUsername)}
-                />
-            </View>
-            <View style={styles.input}>
-                <Image
-                    source={require('../Image/username.png')}
-                    style={styles.i1}
-                    resizeMode="contain"
-                />
-                <TextInput style={styles.textinput}
-                    placeholder="Full name"
-                    onChangeText={(inputFullname) => setFullname(inputFullname)}
-
-                />
-
-            </View>
-
-            <View style={styles.input}>
-                <Image
-                    source={require('../Image/mk.png')}
-                    style={styles.i1}
-                    resizeMode="contain"
-                />
-                <TextInput style={styles.textinput}
-                    placeholder="Password"
-                    secureTextEntry={true}
-                    onChangeText={(inputPassword) => setPassword(inputPassword)}
-                    value={password}
-                />
-            </View>
-
-            <View style={styles.input}>
-                <Image
-                    source={require('../Image/email2.png')}
-                    style={styles.i1}
-                    resizeMode="contain"
-                />
-                <TextInput style={styles.textinput}
-                    placeholder="Your Email"
-
-                    onChangeText={(inputemail) => setEmail(inputemail)}
-
-                />
-
-            </View>
-
-            <View style={styles.input}>
-                <Image
-                    source={require('../Image/phone.png')}
-                    style={styles.i1}
-                    resizeMode="contain"
-                />
-                <TextInput style={styles.textinput}
-                    placeholder="Phone"
-
-                    onChangeText={(inputphone) => setPhone(inputphone)}
-
-                />
-
-            </View>
-
-            <View style={styles.input}>
-                <Image
-                    source={require('../Image/address.png')}
-                    style={styles.i1}
-                    resizeMode="contain"
-                />
-                <TextInput style={styles.textinput}
-                    placeholder="Address"
-
-                    onChangeText={(inputaddress) => setAddress(inputaddress)}
-
-                />
-
-            </View>
-
-            <TouchableHighlight>
-                <View style={styles.button}>
-                    <Text style={{ color: "#fff", fontWeight: 'bold', fontSize: 18 }} >Sign In</Text>
+                <Text style={styles.text}>Let’s Get Started</Text>
+                <Text style={styles.text2}>Create a new account</Text>
+                {/* ... Your other components ... */}
+                <View style={styles.input}>
+                    <Image
+                        source={require('../Image/username.png')}
+                        style={styles.i1}
+                        resizeMode="contain"
+                    />
+                    <TextInput
+                        style={styles.textinput}
+                        placeholder="Username"
+                        onChangeText={(text) => setUsername(text)}
+                        value={Username}
+                    />
                 </View>
-            </TouchableHighlight>
-            <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.text2}>Already have an account?</Text>
-                <Text onPress={() => { navigation.navigate('Login_Screens') }} style={styles.text4}> Sign In</Text>
-            </View>
-        
-        </ScrollView>
+                <View style={styles.input}>
+                    <Image
+                        source={require('../Image/username.png')}
+                        style={styles.i1}
+                        resizeMode="contain"
+                    />
+                    <TextInput style={styles.textinput}
+                        placeholder="Full name"
+                        onChangeText={(text) => setFullname(text)}
+                        value={Fullname}
+
+                    />
+
+                </View>
+
+                <View style={styles.input}>
+                    <Image
+                        source={require('../Image/mk.png')}
+                        style={styles.i1}
+                        resizeMode="contain"
+                    />
+                    <TextInput style={styles.textinput}
+                        placeholder="Password"
+                        secureTextEntry={true}
+                        onChangeText={(text) => setPassword(text)}
+                        value={password}
+                    />
+                </View>
+
+                <View style={styles.input}>
+                    <Image
+                        source={require('../Image/email2.png')}
+                        style={styles.i1}
+                        resizeMode="contain"
+                    />
+                    <TextInput style={styles.textinput}
+                        placeholder="Your Email"
+                        onChangeText={(text) => setEmail(text)}
+                        value={email}
+
+                    />
+
+                </View>
+
+                <View style={styles.input}>
+                    <Image
+                        source={require('../Image/phone.png')}
+                        style={styles.i1}
+                        resizeMode="contain"
+                    />
+                    <TextInput style={styles.textinput}
+                        placeholder="Phone"
+                        onChangeText={(text) => setPhone(text)}
+                        value={phone}
+
+                    />
+
+                </View>
+
+                <View style={styles.input}>
+                    <Image
+                        source={require('../Image/address.png')}
+                        style={styles.i1}
+                        resizeMode="contain"
+                    />
+                    <TextInput style={styles.textinput}
+                        placeholder="Address"
+
+                        onChangeText={(text) => setAddress(text)}
+                        value={address}
+
+                    />
+
+                </View>
+
+                <TouchableHighlight
+                    onPress={dangky}
+                    style={styles.button}
+
+                >
+                    <View >
+                        <Text style={{ color: "#fff", fontWeight: 'bold', fontSize: 18 }} >Sign Up</Text>
+                    </View>
+                </TouchableHighlight>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={styles.text2}>Already have an account?</Text>
+                    <Text onPress={() => { navigation.navigate('Login_Screens') }} style={styles.text4}> Sign In</Text>
+                </View>
+
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 };
 
