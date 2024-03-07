@@ -1,4 +1,4 @@
-import { Platform, KeyboardAvoidingView, StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert, ScrollView } from 'react-native';
+import { Platform, KeyboardAvoidingView, StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
@@ -13,10 +13,16 @@ const Signup_Screens = () => {
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
 
+    //ẩn hiện mật hẩu
+    const [secureTextEntry, setSecureTextEntry] = useState(true);
+    const toggleSecureEntry = () => {
+        setSecureTextEntry(!secureTextEntry);
+    };
+
 
     const dangky = () => {
 
-        if (Username.length === 0 || Fullname.length === 0 || password.length === 0 || email.length === 0 || phone.length === 0 ) {
+        if (Username.length === 0 || Fullname.length === 0 || password.length === 0 || email.length === 0 || phone.length === 0) {
             Alert.alert('', 'Vui lòng điền đầy đủ thông tin');
             return;
         }
@@ -65,7 +71,7 @@ const Signup_Screens = () => {
             });
     }
 
-    
+
 
     // const dangky = async () => {
     //     try {
@@ -113,6 +119,8 @@ const Signup_Screens = () => {
                 <Text style={styles.text}>Let’s Get Started</Text>
                 <Text style={styles.text2}>Create a new account</Text>
                 {/* ... Your other components ... */}
+
+                {/* usernam */}
                 <View style={styles.input}>
                     <Image
                         source={require('../Image/username.png')}
@@ -125,7 +133,9 @@ const Signup_Screens = () => {
                         onChangeText={(text) => setUsername(text)}
                         value={Username}
                     />
+                    <View style={styles.eyepass}></View>
                 </View>
+                {/* full name */}
                 <View style={styles.input}>
                     <Image
                         source={require('../Image/username.png')}
@@ -136,11 +146,10 @@ const Signup_Screens = () => {
                         placeholder="Full name"
                         onChangeText={(text) => setFullname(text)}
                         value={Fullname}
-
                     />
-
+                    <View style={styles.eyepass}></View>
                 </View>
-
+                {/* pass */}
                 <View style={styles.input}>
                     <Image
                         source={require('../Image/mk.png')}
@@ -149,12 +158,20 @@ const Signup_Screens = () => {
                     />
                     <TextInput style={styles.textinput}
                         placeholder="Password"
-                        secureTextEntry={true}
+                        secureTextEntry={secureTextEntry}
                         onChangeText={(text) => setPassword(text)}
                         value={password}
                     />
-                </View>
+                    <TouchableOpacity onPress={toggleSecureEntry} activeOpacity={1}>
+                        <Image
+                            source={secureTextEntry ? require('../Image/passan.png') : require('../Image/passhien.png')}
+                            style={styles.eyepass}
+                            resizeMode="contain"
+                        />
 
+                    </TouchableOpacity>
+                </View>
+                {/* email */}
                 <View style={styles.input}>
                     <Image
                         source={require('../Image/email2.png')}
@@ -165,11 +182,10 @@ const Signup_Screens = () => {
                         placeholder="Your Email"
                         onChangeText={(text) => setEmail(text)}
                         value={email}
-
                     />
-
+                    <View style={styles.eyepass}></View>
                 </View>
-
+                {/* phone */}
                 <View style={styles.input}>
                     <Image
                         source={require('../Image/phone.png')}
@@ -180,11 +196,11 @@ const Signup_Screens = () => {
                         placeholder="Phone"
                         onChangeText={(text) => setPhone(text)}
                         value={phone}
-
                     />
+                    <View style={styles.eyepass}></View>
 
                 </View>
-
+                {/* địa chỉ */}
                 {/* <View style={styles.input}>
                     <Image
                         source={require('../Image/address.png')}
@@ -196,8 +212,8 @@ const Signup_Screens = () => {
 
                         onChangeText={(text) => setAddress(text)}
                         value={address}
-
                     />
+                    <View style={styles.eyepass}></View>
 
                 </View> */}
 
@@ -264,12 +280,13 @@ const styles = StyleSheet.create({
 
     input: {
         height: hp('6%'),
-        width: wp('90%'),
+        width: wp('95%'),
         marginTop: hp('2%'),
         borderWidth: 0.3,
         borderRadius: 4,
         justifyContent: "center",
         flexDirection: 'row',
+        alignItems: 'center'
     },
     i1: {
         height: hp('6%'),
@@ -286,11 +303,17 @@ const styles = StyleSheet.create({
         marginTop: hp('3%'),
         borderRadius: 5,
         height: hp('7%'),
-        width: wp('90%'),
+        width: wp('94%'),
         alignItems: 'center',
         backgroundColor: '#9DDC2D',
         padding: 10,
         justifyContent: "center"
+    },
+    eyepass: {
+        height: hp('4%'),
+        width: wp('4%'),
+        marginLeft:wp('2%')
+
     },
 });
 
