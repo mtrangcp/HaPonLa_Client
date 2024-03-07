@@ -2,15 +2,20 @@ import { ScrollView, StyleSheet, Text, View, Image, TouchableOpacity, ActivityIn
 import React, { useState } from "react";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-const Detail_Screens = () => {
+const Detail_Screens = ({route, navigation}) => {
     const [searchQuery, setSearchQuery] = useState('');
+
+    const { book } = route.params;
+
+    const handleBackPress = () => {
+        navigation.goBack();
+    };
 
     return (
         <View style={styles.container}>
-            {/* Search */}
             <View style={styles.V1}>
 
-                <TouchableOpacity style={{ marginRight: 20 }}>
+                <TouchableOpacity style={{ marginRight: 280 }} onPress={handleBackPress}>
                     <Image
                         source={require('../Image/back.png')}
                         style={[styles.i1, { tintColor: '#9DDC2D' }]}
@@ -18,7 +23,7 @@ const Detail_Screens = () => {
                     />
                 </TouchableOpacity>
 
-                <View style={styles.search}>
+                {/* <View style={styles.search}>
                     <Image
                         source={require('../Image/search.jpg')}
                         style={styles.i2}
@@ -27,11 +32,12 @@ const Detail_Screens = () => {
 
                     <TextInput
                         placeholder="Search Product"
-                        onChangeText={Text}
+                        onChangeText={text => setSearchQuery(text)} 
                         value={searchQuery}
                     />
 
-                </View>
+
+                </View> */}
 
                 <TouchableOpacity style={{ marginRight: wp('4%') }}>
                     <Image
@@ -56,14 +62,14 @@ const Detail_Screens = () => {
             <ScrollView >
                 <View style={styles.V2} >
                     <Image
-                        source={require('../Image/tests1.jpg')}
+                        source={book.image}
                         style={styles.i3}
                         resizeMode="contain"
                     />
                     <View>
-                        <Text numberOfLines={3} style={{ fontSize: 20, fontWeight: 'bold', marginLeft: wp('5%'), marginRight: wp('3%') }} >Tô điểm sắc màu</Text>
+                        <Text numberOfLines={3} style={{ fontSize: 20, fontWeight: 'bold', marginLeft: wp('5%'), marginRight: wp('3%') }} >{book.name}</Text>
                         <Text style={{ fontSize: 16, marginTop: hp('5%'), marginLeft: wp('5%'), }} >Tác giả : </Text>
-                        <Text style={{ fontSize: 20, marginTop: hp('5%'), marginLeft: wp('5%'), color: '#9DDC2D' }} >81.000 đ </Text>
+                        <Text style={{ fontSize: 20, marginTop: hp('5%'), marginLeft: wp('5%'), color: '#9DDC2D' }} >${book.price} </Text>
                     </View>
                 </View>
 

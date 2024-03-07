@@ -51,9 +51,10 @@ const Order_Details_Screens = () => {
 
                     <TextInput
                         placeholder="Search Product"
-                        onChangeText={Text}
+                        onChangeText={text => setSearchQuery(text)} // Corrected onChangeText function
                         value={searchQuery}
                     />
+
 
                 </View>
 
