@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert,TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp, listenOrientationChange as lor, removeOrientationListener as rol } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
@@ -7,6 +7,12 @@ const Login_Screens = (props) => {
   const navigation = useNavigation();
   const [Username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  //ẩn hiện mật hẩu
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const toggleSecureEntry = () => {
+    setSecureTextEntry(!secureTextEntry);
+  };
 
   const dangnhap = () => {
     // kiểm tra hợp lệ dữ liệu
@@ -18,7 +24,7 @@ const Login_Screens = (props) => {
     }
     // thực hiện fetch để lấy dữ liệu về
     let url_check_login = "http://192.168.1.9:3000/api/user?username=" + Username;
-    
+
 
     fetch(url_check_login)
       .then((res) => res.json())
@@ -29,12 +35,12 @@ const Login_Screens = (props) => {
         } else {
           // Tìm người dùng trong mảng dữ liệu
           const user = res_login.data.find(user => user.username === Username && user.passwork === password);
-          
+
           if (!user) {
-           Alert.alert("","Sai mật khẩu hoặc mk");
+            Alert.alert("", "Sai mật khẩu hoặc mk");
             return;
           }
-    
+
           // Lưu thông tin người dùng vào AsyncStorage
           try {
             await AsyncStorage.setItem('Login_Screens', JSON.stringify(user));
@@ -50,9 +56,9 @@ const Login_Screens = (props) => {
         // Xử lý lỗi khi gọi API
         console.error(error);
       });
-      
+
   }
-  
+
 
   return (
     <View style={styles.container}>
@@ -76,6 +82,7 @@ const Login_Screens = (props) => {
           onChangeText={(text) => setUsername(text)}
           value={Username}
         />
+        <View style={styles.eyepass}></View>
 
       </View>
       {/* Pass */}
@@ -88,10 +95,18 @@ const Login_Screens = (props) => {
         <TextInput
           style={styles.textinput}
           placeholder="Password"
-          secureTextEntry={true}
+          secureTextEntry={secureTextEntry}
           onChangeText={(text) => setPassword(text)}
           value={password}
         />
+        <TouchableOpacity onPress={toggleSecureEntry} activeOpacity={1}>
+          <Image
+            source={secureTextEntry ? require('../Image/passan.png') : require('../Image/passhien.png')}
+            style={styles.eyepass}
+            resizeMode="contain"
+          />
+
+        </TouchableOpacity>
 
       </View>
 
@@ -157,17 +172,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: hp('2%'),
   },
-
-
   input: {
     height: hp('6%'),
-    width: wp('90%'),
+    width: wp('95%'),
     marginTop: hp('2%'),
     borderWidth: 0.3,
     borderRadius: 4,
     justifyContent: "center",
     flexDirection: 'row',
-  },
+    alignItems: 'center'
+},
   i1: {
     height: hp('6%'),
     width: wp('6%'),
@@ -189,4 +203,10 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: "center"
   },
+  eyepass: {
+    height: hp('4%'),
+    width: wp('4%'),
+    marginLeft:wp('2%')
+
+},
 })

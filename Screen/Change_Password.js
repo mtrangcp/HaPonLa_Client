@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp, listenOrientationChange as lor, removeOrientationListener as rol } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
@@ -6,10 +6,29 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Change_Password = (props) => {
+    const navigation = useNavigation();
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
+
+    //ẩn hiện mật hẩu
+    const [secureTextEntry1, setSecureTextEntry1] = useState(true);
+    const [secureTextEntry2, setSecureTextEntry2] = useState(true);
+    const [secureTextEntry3, setSecureTextEntry3] = useState(true);
+
+    const toggleSecureEntry1 = () => {
+        setSecureTextEntry1(!secureTextEntry1);
+    };
+
+    const toggleSecureEntry2 = () => {
+        setSecureTextEntry2(!secureTextEntry2);
+    };
+
+    const toggleSecureEntry3 = () => {
+        setSecureTextEntry3(!secureTextEntry3);
+    };
+    // chức năng đổi mật khẩu
     const doimatkhau = async () => {
 
         // Kiểm tra xem mật khẩu cũ, mật khẩu mới và xác nhận mật khẩu có được điền đầy đủ không
@@ -33,18 +52,21 @@ const Change_Password = (props) => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({passwork: newPassword})
+            body: JSON.stringify({ passwork: newPassword })
         })
             .then((res) => {
                 if (res.status == 200)
-                    Alert.alert("","Đổi mật khẩu thành công")
+                    Alert.alert('', 'Đổi mật khẩu thành công', [
+
+                        { text: 'OK', onPress: () => navigation.navigate('Account_Screens') },
+                    ]);
             })
             .catch((ex) => {
                 console.log(ex);
             });
     };
 
-    
+
     return (
         <View style={styles.container}>
             <View style={styles.V1}>
@@ -60,21 +82,37 @@ const Change_Password = (props) => {
             </View>
 
             <View style={styles.container2}>
+
+                {/* mật khẩu cũ */}
                 <View style={styles.input}>
                     <Image
                         source={require('../Image/mk.png')}
                         style={styles.i1}
                         resizeMode="contain"
+                        secureTextEntry={true}
                     />
                     <TextInput
                         style={styles.textinput}
                         placeholder="Mật khẩu cũ"
                         onChangeText={(text) => setOldPassword(text)}
                         value={oldPassword}
+                        secureTextEntry={secureTextEntry1}
                     />
+                    <TouchableOpacity onPress={toggleSecureEntry1} activeOpacity={1}>
+                        <Image
+                            source={secureTextEntry1 ? require('../Image/passan.png') : require('../Image/passhien.png')}
+                            style={styles.eyepass}
+                            resizeMode="contain"
+                        />
+
+                    </TouchableOpacity>
+
+
+
+
 
                 </View>
-                {/* Pass */}
+                {/* mật khẩu mới */}
                 <View style={styles.input}>
                     <Image
                         source={require('../Image/mk.png')}
@@ -84,13 +122,25 @@ const Change_Password = (props) => {
                     <TextInput
                         style={styles.textinput}
                         placeholder="Mật khẩu mới"
-                        secureTextEntry={true}
+                        secureTextEntry={secureTextEntry2}
                         onChangeText={(text) => setNewPassword(text)}
                         value={newPassword}
                     />
 
-                </View>
 
+                    <TouchableOpacity onPress={toggleSecureEntry2} activeOpacity={1}>
+                        <Image
+                            source={secureTextEntry2 ? require('../Image/passan.png') : require('../Image/passhien.png')}
+                            style={styles.eyepass}
+                            resizeMode="contain"
+                        />
+
+                    </TouchableOpacity>
+
+
+
+                </View>
+                {/* nhập lại mật khẩu mới */}
                 <View style={styles.input}>
                     <Image
                         source={require('../Image/mk.png')}
@@ -100,10 +150,21 @@ const Change_Password = (props) => {
                     <TextInput
                         style={styles.textinput}
                         placeholder="Nhập lại mật khẩu"
-                        secureTextEntry={true}
+                        secureTextEntry={secureTextEntry3}
                         onChangeText={(text) => setConfirmPassword(text)}
                         value={confirmPassword}
                     />
+
+
+                    <TouchableOpacity onPress={toggleSecureEntry3} activeOpacity={1}>
+                        <Image
+                            source={secureTextEntry3 ? require('../Image/passan.png') : require('../Image/passhien.png')}
+                            style={styles.eyepass}
+                            resizeMode="contain"
+                        />
+
+                    </TouchableOpacity>
+
 
                 </View>
 
@@ -160,18 +221,23 @@ const styles = StyleSheet.create({
     },
     input: {
         height: hp('6%'),
-        width: wp('90%'),
+        width: wp('95%'),
         marginTop: hp('2%'),
         borderWidth: 0.3,
         borderRadius: 4,
         justifyContent: "center",
         flexDirection: 'row',
+        alignItems: 'center'
     },
     i1: {
         height: hp('6%'),
         width: wp('6%'),
         marginLeft: wp('1%'),
-
+    },
+    eyepass: {
+        height: hp('4%'),
+        width: wp('4%'),
+        marginLeft:wp('2%')
     },
     textinput: {
         width: wp('76%'),
