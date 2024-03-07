@@ -5,7 +5,7 @@ import Login_Screens from './Screen/Login_Screens';
 import Signup_Screens from './Screen/Signup_Screens';
 import Category_Screens from './Screen/Category_Screens';
 import Detail_Screens from './Screen/Detail_Screens';
-import History_Screens from './Screen/History_Screens';
+import History_Screens from './Screen/History_Screens'
 import Order_Details_Screens from './Screen/Order_Details_Screens';
 import Account_Screens from './Screen/Account_Screens';
 import User_Information_Screens from './Screen/User_Information_Screens';
@@ -23,6 +23,7 @@ function App() {
         <Stack.Screen options={{ headerShown: false }} name="Login_Screens" component={Login_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Change_Password" component={Change_Password} />
         <Stack.Screen options={{ headerShown: false }} name="Signup_Screens" component={Signup_Screens} />
+        {/* <Stack.Screen options={{ headerShown: false }} name="History_Screens" component={Histor} /> */}
         <Stack.Screen options={{ headerShown: false }} name="History_Screens" component={History_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Address_Screens" component={Address_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="User_Information_Screens" component={User_Information_Screens} />
