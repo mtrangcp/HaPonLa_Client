@@ -3,17 +3,17 @@ import React, { useEffect, useState } from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp, listenOrientationChange as lor, removeOrientationListener as rol } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const Login_Screens = () => {
+const Login_Screens = (props) => {
   const navigation = useNavigation();
   const [Username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const dangnhap = () => {
     // kiểm tra hợp lệ dữ liệu
-    if (Username.length == 0) {
+    if (Username.trim() === '') {
       Alert.alert('', "Chưa nhập Username"); return;
     }
-    if (password.length == 0) {
+    if (password.trim() === '') {
       alert("Chưa nhập Password"); return; // lệnh return để thoát hàm login
     }
     // thực hiện fetch để lấy dữ liệu về
@@ -50,7 +50,9 @@ const Login_Screens = () => {
         // Xử lý lỗi khi gọi API
         console.error(error);
       });
+      
   }
+  
 
   return (
     <View style={styles.container}>

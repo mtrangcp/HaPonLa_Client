@@ -2,7 +2,6 @@ import { Platform, KeyboardAvoidingView, StyleSheet, Text, View, Image, TextInpu
 import React, { useEffect, useState } from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
 
 
 const Signup_Screens = () => {
@@ -13,12 +12,24 @@ const Signup_Screens = () => {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
-    
+
 
     const dangky = () => {
 
-        if (Username.length === 0 || Fullname.length === 0 || password.length === 0 || email.length === 0 || phone.length === 0 || address.length === 0) {
+        if (Username.length === 0 || Fullname.length === 0 || password.length === 0 || email.length === 0 || phone.length === 0 ) {
             Alert.alert('', 'Vui lòng điền đầy đủ thông tin');
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            Alert.alert('', 'Email không hợp lệ');
+            return;
+        }
+
+        const phoneRegex = /^\d{10,11}$/;
+        if (!phoneRegex.test(phone)) {
+            Alert.alert('', 'Số điện thoại không hợp lệ');
             return;
         }
         // tạo đối tượng dữ liệu
@@ -32,7 +43,7 @@ const Signup_Screens = () => {
             role: 'USER',
             gender: 'MALE',
             active: true,
-            
+
         };
         let url_api = 'http://192.168.1.9:3000/api/user/add/';
         fetch(url_api, {
@@ -54,30 +65,7 @@ const Signup_Screens = () => {
             });
     }
 
-    // const dangky = async () => {
-    //     try {
-    //         const newUser = {
-    //             username: 'example_username',
-    //             passwork: 'example_password',
-    //             email: 'example@example.com',
-    //             phone: '123456789',
-    //             fullname: 'Example User',
-    //             gender: 'MALE', // hoặc 'FEMALE', 'OTHER'
-    //             active: true,
-    //             role: 'USER', // hoặc 'ADMIN'
-    //             points: 0
-    //             // Các trường khác bạn có thể thêm tùy theo cần thiết
-    //         };
-
-    //         const response = await axios.post('http://192.168.1.9:3000/api/user/add/', newUser);
-
-    //         console.log('User created successfully:', response.data);
-    //     } catch (error) {
-    //         console.error('Error creating user:', error);
-    //     }
-    // };
-    // // Gọi hàm để tạo người dùng mới
-    // dangky();
+    
 
     // const dangky = async () => {
     //     try {
@@ -97,7 +85,7 @@ const Signup_Screens = () => {
     //                 active: true,
     //                 role: 'USER',
     //                 points: 0 // Thêm các trường khác nếu cần
-                    
+
     //             }),
     //         });
     //         console.log(response)
@@ -197,7 +185,7 @@ const Signup_Screens = () => {
 
                 </View>
 
-                <View style={styles.input}>
+                {/* <View style={styles.input}>
                     <Image
                         source={require('../Image/address.png')}
                         style={styles.i1}
@@ -211,7 +199,7 @@ const Signup_Screens = () => {
 
                     />
 
-                </View>
+                </View> */}
 
                 <TouchableHighlight
                     onPress={dangky}
