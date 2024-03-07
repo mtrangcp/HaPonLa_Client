@@ -18,6 +18,7 @@ const Login_Screens = () => {
     }
     // thực hiện fetch để lấy dữ liệu về
     let url_check_login = "http://192.168.1.9:3000/api/user?username=" + Username;
+    
 
     fetch(url_check_login)
       .then((res) => res.json())
@@ -49,11 +50,7 @@ const Login_Screens = () => {
         // Xử lý lỗi khi gọi API
         console.error(error);
       });
-
-
   }
-
-
 
   return (
     <View style={styles.container}>
