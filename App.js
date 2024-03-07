@@ -19,23 +19,18 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen options={{ headerShown: false }} name="Welcome" component={Welcome_Screens} />
-      <Stack.Screen options={{ headerShown: false }} name="Change_Password" component={Change_Password} />
-        
+        <Stack.Screen options={{ headerShown: false }} name="Welcome" component={Welcome_Screens} />
+        <Stack.Screen options={{ headerShown: false }} name="Login_Screens" component={Login_Screens} />
+        <Stack.Screen options={{ headerShown: false }} name="Change_Password" component={Change_Password} />
         <Stack.Screen options={{ headerShown: false }} name="Signup_Screens" component={Signup_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="History_Screens" component={History_Screens} />
-
-        <Stack.Screen options={{ headerShown: false }} name="Login_Screens" component={Login_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Address_Screens" component={Address_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="User_Information_Screens" component={User_Information_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Account_Screens" component={Account_Screens} />
-
         <Stack.Screen options={{ headerShown: false }} name="Category_Screens" component={Category_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Detail_Screens" component={Detail_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Order_Details_Screens" component={Order_Details_Screens} />
-
-
-
+        {/* tttttttttttttttttttttttttttttttttt */}
         {/* Thêm các Screen khác nếu cần */}
       </Stack.Navigator>
     </NavigationContainer>
