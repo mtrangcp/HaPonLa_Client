@@ -13,48 +13,47 @@ const Signup_Screens = () => {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
+    
 
-    // const dangky = () => {
+    const dangky = () => {
 
-    //     if (Username.length === 0 || Fullname.length === 0 || password.length === 0 || email.length === 0 || phone.length === 0 || address.length === 0) {
-    //         Alert.alert('', 'Vui lòng điền đầy đủ thông tin');
-    //         return;
-    //     }
-    //     // tạo đối tượng dữ liệu
-    //     let user = {
-    //         username: Username,
-    //         fullname: Fullname,
-    //         passwork: password,
-    //         email: email,
-    //         phone: phone,
-    //         address: address,
-    //         points: 0,
-    //         role: 'USER',
-    //         gender: 'MALE',
-    //         active: true,
-    //         discounts: [], // Điền giảm giá vào đây
-    //         notifications: [],
-    //     };
-    //     let url_api = 'http://192.168.1.9:3000/api/user/add/';
-    //     fetch(url_api, {
-    //         method: 'POST',
-    //         headers: {
-    //             Accept: 'application/json',
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(user)
-    //     })
-    //         .then((res) => {
+        if (Username.length === 0 || Fullname.length === 0 || password.length === 0 || email.length === 0 || phone.length === 0 || address.length === 0) {
+            Alert.alert('', 'Vui lòng điền đầy đủ thông tin');
+            return;
+        }
+        // tạo đối tượng dữ liệu
+        let user = {
+            username: Username,
+            fullname: Fullname,
+            passwork: password,
+            email: email,
+            phone: phone,
+            points: 0,
+            role: 'USER',
+            gender: 'MALE',
+            active: true,
+            
+        };
+        let url_api = 'http://192.168.1.9:3000/api/user/add/';
+        fetch(url_api, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(user)
+        })
+            .then((res) => {
 
-    //             if (res.status == 200)
-    //                 Alert.alert("Tạo tài khoản thành công")
-    //             navigation.navigate('Login_Screens');
-    //         })
-    //         .catch((ex) => {
-    //             console.log(ex);
-    //         });
-    // }
-   
+                if (res.status == 200)
+                    Alert.alert("Tạo tài khoản thành công")
+                navigation.navigate('Login_Screens');
+            })
+            .catch((ex) => {
+                console.log(ex);
+            });
+    }
+
     // const dangky = async () => {
     //     try {
     //         const newUser = {
@@ -69,9 +68,9 @@ const Signup_Screens = () => {
     //             points: 0
     //             // Các trường khác bạn có thể thêm tùy theo cần thiết
     //         };
-    
+
     //         const response = await axios.post('http://192.168.1.9:3000/api/user/add/', newUser);
-    
+
     //         console.log('User created successfully:', response.data);
     //     } catch (error) {
     //         console.error('Error creating user:', error);
@@ -79,44 +78,41 @@ const Signup_Screens = () => {
     // };
     // // Gọi hàm để tạo người dùng mới
     // dangky();
-    
-    const dangky = async () => {
-        try {
-            const url = 'http://192.168.1.9:3000/api/user/add/'; // Thay thế YOUR_API_ENDPOINT bằng địa chỉ API của bạn
-            const userData = {
-                username: 'example_usernameaasssss',
-                passwork: 'example_passwordaaasâsss',
-                email: 'example@example.com',
-                phone: '123456789',
-                fullname: 'John Doe',
-                gender: 'MALE',
-                active: true,
-                role: 'USER',
-                points: 0 // Thêm các trường khác nếu cần
-            };
-    
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Các headers khác nếu cần
-                },
-                body: JSON.stringify(userData),
-            });
-    
-            if (!response.ok) {
-                throw new Error('Error creating user');
-            }
-    
-            const responseData = await response.json();
-            console.log('User created successfully:', responseData);
-        } catch (error) {
-            console.error('Error:', error.message);
-        }
-    };
-    
-    // Gọi hàm createUser để tạo user
-    dangky();
+
+    // const dangky = async () => {
+    //     try {
+    //         console.log(Fullname)
+    //         const response = await fetch('http://192.168.1.9:3000/api/User/add/', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({
+    //                 username: Username,
+    //                 passwork: password,
+    //                 email: email,
+    //                 phone: password,
+    //                 fullname: Fullname,
+    //                 gender: 'MALE',
+    //                 active: true,
+    //                 role: 'USER',
+    //                 points: 0 // Thêm các trường khác nếu cần
+                    
+    //             }),
+    //         });
+    //         console.log(response)
+    //         if (!response.ok) {
+    //             throw new Error('Error creating user');
+    //         }
+    //         const responseData = await response.json();
+    //         // console.log('User created successfully:', responseData);
+    //     } catch (error) {
+    //         console.error('Error:', error.message);
+    //     }
+    // };
+
+    // // Gọi hàm createUser để tạo user
+    // dangky();
 
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
