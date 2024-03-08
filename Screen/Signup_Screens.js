@@ -253,8 +253,8 @@ const Signup_Screens = () => {
                         >
                             <Text style={styles.buttonText}>Other</Text>
                         </TouchableOpacity>
+                        <View></View>
                     </View>
-                    
                 </View>
 
                 <TouchableHighlight
