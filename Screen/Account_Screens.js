@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight,TouchableOpacity ,Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, TouchableOpacity, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp, listenOrientationChange as lor, removeOrientationListener as rol } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
@@ -7,17 +7,37 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Account_Screens = () => {
     const navigation = useNavigation();
-    const dangxuat = async () =>{
+
+    const dangxuat = async () => {
         try {
             // Xóa dữ liệu lưu trữ đăng nhập
             await AsyncStorage.removeItem('Login_Screens');
             // Chuyển màn hình đến màn hình đăng nhập
             navigation.navigate('Login_Screens');
-          } catch (error) {
+        } catch (error) {
             console.error('Lỗi khi đăng xuất:', error);
-          }
-        
+        }
+
     }
+    //lấy thông tin người dùng
+    const [fullname, setfullname] = useState('');
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const userData = await AsyncStorage.getItem('Login_Screens');
+                if (userData) {
+                    const parsedUserData = JSON.parse(userData);
+                    setfullname(parsedUserData.fullname);
+                    // console.log(parsedUserData.fullname);
+                } else {
+                    console.log('Không tìm thấy dữ liệu người dùng trong AsyncStorage');
+                }
+            } catch (error) {
+                console.log('Lỗi khi lấy dữ liệu từ AsyncStorage:', error);
+            }
+        };
+        fetchData();
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -30,15 +50,17 @@ const Account_Screens = () => {
                         borderRadius: 100
                     }}
                 />
-                <Text style={styles.T1} >Thùy Linh</Text>
+                <Text style={styles.T1} >{fullname}</Text>
             </View>
+
 
             <View>
                 {/* thông tin người dùng */}
                 <TouchableOpacity
+                    onPress={() => navigation.navigate('User_Information_Screens')}
                     style={styles.B1}
                 >
-                    <View style={{flexDirection:"row",alignItems:"center"}}>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Image
                             source={require('../Image/account.jpg')}
                             style={styles.I1}
@@ -57,7 +79,7 @@ const Account_Screens = () => {
                 <TouchableOpacity
                     style={styles.B1}
                 >
-                    <View style={{flexDirection:"row",alignItems:"center"}}>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Image
                             source={require('../Image/order.jpg')}
                             style={styles.I1}
@@ -74,10 +96,10 @@ const Account_Screens = () => {
                 </TouchableOpacity>
                 {/* đổi mật khẩu */}
                 <TouchableOpacity
-                onPress={() => navigation.navigate('Change_Password')}
+                    onPress={() => navigation.navigate('Change_Password')}
                     style={styles.B1}
                 >
-                    <View style={{flexDirection:"row",alignItems:"center"}}>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Image
                             source={require('../Image/pass.jpg')}
                             style={styles.I1}
@@ -96,7 +118,7 @@ const Account_Screens = () => {
                 <TouchableOpacity
                     style={styles.B1}
                 >
-                    <View style={{flexDirection:"row",alignItems:"center"}}>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Image
                             source={require('../Image/discount.jpg')}
                             style={styles.I1}
@@ -116,7 +138,7 @@ const Account_Screens = () => {
                     style={styles.B1}
                     onPress={dangxuat}
                 >
-                    <View style={{flexDirection:"row",alignItems:"center"}}>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Image
                             source={require('../Image/out.jpg')}
                             style={styles.I1}
@@ -133,7 +155,7 @@ const Account_Screens = () => {
                 </TouchableOpacity>
             </View>
 
-            
+
         </View>
 
 
@@ -166,7 +188,7 @@ const styles = StyleSheet.create({
         margin: ('5%'),
         justifyContent: "space-between",
         alignItems: "center",
-        marginTop:hp('4%')
+        marginTop: hp('4%')
     },
     T1: {
         fontSize: 18,
