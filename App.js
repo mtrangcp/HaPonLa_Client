@@ -19,8 +19,8 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen options={{ headerShown: false }} name="Welcome" component={Welcome_Screens} />
-        <Stack.Screen options={{ headerShown: false }} name="Login_Screens" component={Login_Screens} />
+        <Stack.Screen options={{ headerShown: false }} name="Welcome_Screens" component={Welcome_Screens} />
+        <Stack.Screen options={{ headerShown: false, gestureEnabled: false }} name="Login_Screens" component={Login_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Change_Password" component={Change_Password} />
         <Stack.Screen options={{ headerShown: false }} name="Signup_Screens" component={Signup_Screens} />
         {/* <Stack.Screen options={{ headerShown: false }} name="History_Screens" component={Histor} /> */}

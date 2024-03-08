@@ -13,6 +13,12 @@ const Signup_Screens = () => {
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
 
+    //giới tính
+    const [selectedGender, setSelectedGender] = useState(null);
+    const handleGenderSelection = (gender) => {
+        setSelectedGender(gender);
+    };
+
     //ẩn hiện mật hẩu
     const [secureTextEntry, setSecureTextEntry] = useState(true);
     const toggleSecureEntry = () => {
@@ -47,7 +53,7 @@ const Signup_Screens = () => {
             phone: phone,
             points: 0,
             role: 'USER',
-            gender: 'MALE',
+            gender: selectedGender,
             active: true,
 
         };
@@ -217,6 +223,39 @@ const Signup_Screens = () => {
 
                 </View> */}
 
+
+                <View style={styles.igender}>
+                    <View style={styles.vgender1} >
+                        <Image
+                            source={require('../Image/gender.png')}
+                            style={styles.i1}
+                            resizeMode="contain"
+                        />
+                        <Text style={{ marginLeft: wp('1%') }} >Giới tính :</Text>
+                    </View>
+
+                    <View style={{flexDirection:'row',justifyContent:'space-around',}}>
+                        <TouchableOpacity
+                            style={[styles.buttongender, selectedGender === 'MALE' && styles.selectedButton]}
+                            onPress={() => handleGenderSelection('MALE')}
+                        >
+                            <Text style={styles.buttonText}>Male</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.buttongender, selectedGender === 'FEMALE' && styles.selectedButton]}
+                            onPress={() => handleGenderSelection('FEMALE')}
+                        >
+                            <Text style={styles.buttonText}>Female</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.buttongender, selectedGender === 'OTHER' && styles.selectedButton]}
+                            onPress={() => handleGenderSelection('OTHER')}
+                        >
+                            <Text style={styles.buttonText}>Other</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
                 <TouchableHighlight
                     onPress={dangky}
                     style={styles.button}
@@ -277,7 +316,6 @@ const styles = StyleSheet.create({
         marginTop: hp('2%'),
     },
 
-
     input: {
         height: hp('6%'),
         width: wp('95%'),
@@ -312,9 +350,34 @@ const styles = StyleSheet.create({
     eyepass: {
         height: hp('4%'),
         width: wp('4%'),
-        marginLeft:wp('2%')
+        marginLeft: wp('2%')
 
     },
+    igender: {
+        marginTop:hp('1%'),
+        height: hp('12%'),
+        width: wp('95%'),
+       
+    },
+    vgender1: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: wp('2.5%')
+
+    },
+    buttongender: {
+        backgroundColor: '#f0f0f0',
+        height: hp('5%'),
+        width: wp('20%'),
+        padding: 10,
+        borderRadius: 5,
+        marginVertical: 5,
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    selectedButton: {
+        backgroundColor: '#9DDC2D',
+      },
 });
 
 export default Signup_Screens;
