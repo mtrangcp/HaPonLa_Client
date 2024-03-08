@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp, listenOrientationChange as lor, removeOrientationListener as rol } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,6 +10,27 @@ const Change_Password = (props) => {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+
+
+    //lấy thông tin người dùng
+    const [fullname, setfullname] = useState('');
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const userData = await AsyncStorage.getItem('Login_Screens');
+                if (userData) {
+                    const parsedUserData = JSON.parse(userData);
+                    setfullname(parsedUserData.fullname);
+                    // console.log(parsedUserData.fullname);
+                } else {
+                    console.log('Không tìm thấy dữ liệu người dùng trong AsyncStorage');
+                }
+            } catch (error) {
+                console.log('Lỗi khi lấy dữ liệu từ AsyncStorage:', error);
+            }
+        };
+        fetchData();
+    }, []);
 
 
     //ẩn hiện mật hẩu
@@ -78,9 +99,10 @@ const Change_Password = (props) => {
                         borderRadius: 100
                     }}
                 />
-                <Text style={styles.T1} >Thùy Linh</Text>
+                <Text style={styles.T1} >{fullname}</Text>
             </View>
 
+            <Text style={styles.T2} >HaPonLa Change Password </Text>
             <View style={styles.container2}>
 
                 {/* mật khẩu cũ */}
@@ -197,7 +219,8 @@ const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         paddingBottom: hp('5%'),
-        backgroundColor: "#FFFFFF"
+        backgroundColor: "#FFFFFF",
+        alignItems: 'center'
     },
     container2: {
         flex: 1,
@@ -237,7 +260,7 @@ const styles = StyleSheet.create({
     eyepass: {
         height: hp('4%'),
         width: wp('4%'),
-        marginLeft:wp('2%')
+        marginLeft: wp('2%')
     },
     textinput: {
         width: wp('76%'),
@@ -252,6 +275,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#9DDC2D',
         padding: 10,
-        justifyContent: "center"
+        justifyContent: "center",
+        marginTop: hp('4%'),
     },
+    T2: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        marginTop: hp('7%'),
+        marginBottom: hp('4%'),
+        color: "#9DDC2D"
+
+    }
 })
