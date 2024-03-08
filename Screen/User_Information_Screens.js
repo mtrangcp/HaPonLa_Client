@@ -7,15 +7,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-const User_Information_Screens =  () => {
-    // const url = 'http://192.168.1.9:3000/api/user/' + parsedUserData._id;
+const User_Information_Screens = () => {
+
+    //lấy thông tin người dùng
     const [fullname, setfullname] = useState('');
     const [email, setemail] = useState('');
     const [phone, setphone] = useState('');
     const [gender, setgender] = useState('');
-
-    
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -34,9 +32,12 @@ const User_Information_Screens =  () => {
                 console.log('Lỗi khi lấy dữ liệu từ AsyncStorage:', error);
             }
         };
-    
+
         fetchData();
     }, []);
+
+    //sửa thông tin người dùng
+    
 
     return (
         <View style={styles.container}>
@@ -86,7 +87,7 @@ const User_Information_Screens =  () => {
 
 
                     <Text style={[styles.T3, { textAlign: 'right' }]} numberOfLines={1} ellipsizeMode='tail'>
-                            {email}
+                        {email}
                     </Text>
 
                 </TouchableOpacity>
