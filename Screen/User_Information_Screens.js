@@ -111,6 +111,23 @@ const User_Information_Screens = (props) => {
     };
     const Sua = async () => {
         // tạo đối tượng dữ liệu
+
+        if ( email2.length === 0 || phone2.length === 0) {
+            Alert.alert('', 'Vui lòng điền đầy đủ thông tin');
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email2)) {
+            Alert.alert('', 'Email không hợp lệ');
+            return;
+        }
+
+        const phoneRegex = /^\d{10,11}$/;
+        if (!phoneRegex.test(phone2)) {
+            Alert.alert('', 'Số điện thoại không hợp lệ');
+            return;
+        }
         let url_api = 'http://192.168.1.9:3000/api/user/update/' + id;
         console.log(url_api)
         fetch(url_api, {
