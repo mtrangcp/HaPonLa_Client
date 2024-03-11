@@ -231,7 +231,7 @@ const Signup_Screens = () => {
                             style={styles.i1}
                             resizeMode="contain"
                         />
-                        <Text style={{ marginLeft: wp('1%') }} >Giới tính :</Text>
+                        <Text style={{ marginLeft: wp('1%') }} >Gender :</Text>
                     </View>
 
                     <View style={{flexDirection:'row',justifyContent:'space-around',}}>
