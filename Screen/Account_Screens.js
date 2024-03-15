@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Account_Screens = () => {
     const navigation = useNavigation();
+    const [id, setid] = useState('');
 
     const dangxuat = async () => {
         try {
@@ -21,14 +22,54 @@ const Account_Screens = () => {
     }
     //lấy thông tin người dùng
     const [fullname, setfullname] = useState('');
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const userData = await AsyncStorage.getItem('Login_Screens');
+    //             if (userData) {
+    //                 const parsedUserData = JSON.parse(userData);
+    //                 setfullname(parsedUserData.fullname);
+    //                 // console.log(parsedUserData.fullname);
+    //             } else {
+    //                 console.log('Không tìm thấy dữ liệu người dùng trong AsyncStorage');
+    //             }
+    //         } catch (error) {
+    //             console.log('Lỗi khi lấy dữ liệu từ AsyncStorage:', error);
+    //         }
+    //     };
+    //     fetchData();
+    // }, []);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const userData = await AsyncStorage.getItem('Login_Screens');
                 if (userData) {
                     const parsedUserData = JSON.parse(userData);
-                    setfullname(parsedUserData.fullname);
-                    // console.log(parsedUserData.fullname);
+                    // setfullname(parsedUserData.fullname);
+                    // setemail(parsedUserData.email);
+                    // setphone(parsedUserData.phone);
+                    // setgender(parsedUserData.gender);
+
+                    setid(parsedUserData._id)
+                    console.log(parsedUserData._id)
+                    console.log(id)
+
+                    let url_api = 'http://192.168.1.9:3000/api/user/' + parsedUserData._id;
+                    // console.log(url_api)
+                    // laythongtin()
+                    // try {
+                    //     const response = await fetch(url_api); // load dữ liệu
+                    //     const json = await response.json(); // chuyển dữ liệu thành json
+                    //     // console.log(json)
+                    //     setfullname(json.data.fullname);
+                    //     setemail(json.data.email);
+                    //     setphone(json.data.phone);
+                    //     setgender(json.data.gender);
+                    //     setemail2(json.data.email)
+                    // } catch (error) {
+                    //     console.error(error);
+                    // }
                 } else {
                     console.log('Không tìm thấy dữ liệu người dùng trong AsyncStorage');
                 }
@@ -36,8 +77,31 @@ const Account_Screens = () => {
                 console.log('Lỗi khi lấy dữ liệu từ AsyncStorage:', error);
             }
         };
+
         fetchData();
     }, []);
+
+    const laythongtin = async () => {
+        let url = 'http://192.168.1.9:3000/api/user/' + id;
+        console.log(id)
+        console.log(url)
+        const response = await fetch(url); // load dữ liệu
+        const json = await response.json(); // chuyển dữ liệu thành json
+        // console.log(json)
+        setfullname(json.data.fullname);
+        setemail(json.data.email);
+        setphone(json.data.phone);
+        setphone2(json.data.phone);
+        setgender(json.data.gender);
+        setemail2(json.data.email)
+        setSelectedGender(json.data.gender)
+        setSelectedGender2(json.data.gender)
+    }
+
+    useEffect(() => {
+        laythongtin(); // Gọi hàm laythongtin ở đây
+    }, [id]);
+
 
     return (
         <View style={styles.container}>
