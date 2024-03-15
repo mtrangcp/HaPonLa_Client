@@ -88,7 +88,6 @@ const User_Information_Screens = (props) => {
         setemail2(json.data.email)
         setSelectedGender(json.data.gender)
         setSelectedGender2(json.data.gender)
-
     }
 
     useEffect(() => {
@@ -154,7 +153,7 @@ const User_Information_Screens = (props) => {
 
     const handleUpdateUser = async () => {
         await Sua();
-        laythongtin();
+        await laythongtin();
     }
 
 

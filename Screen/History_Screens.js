@@ -1,9 +1,12 @@
 import { ScrollView, StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator, FlatList, Alert, Modal, Button, TextInput, TouchableHighlight } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const listTab = [
+    {
+        status: 'Đã hủy'
+    },
     {
         status: 'Đang chờ xác nhận'
     },
@@ -11,43 +14,118 @@ const listTab = [
         status: 'Đã xác nhận'
     },
     {
-        status: 'Đã hủy'
+        status: 'Đang vận chuyển'
+    },
+    {
+        status: 'Giao hàng thành công'
     },
 ]
 
 const data = [
-    { id: '1', status: 'Đang chờ xác nhận', quantity: 2, date: "21/01/2024" },
-    { id: '2', status: 'Đã xác nhận', quantity: 2, date: "21/01/2024" },
-    { id: '3', status: 'Đang chờ xác nhận', quantity: 2, date: "21/01/2024" },
-    { id: '4', status: 'Đã hủy', quantity: 2, date: "21/01/2024" },
-    { id: '5', status: 'Đang chờ xác nhận', quantity: 2, date: "21/01/2024" },
-    { id: '6', status: 'Đã xác nhận', quantity: 2, date: "21/01/2024" },
+    { id: '1', status: 'Đang chờ xác nhận', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://lh3.googleusercontent.com/WaqKoYeaQ8qEP_b2zPfIVfgV7pGNuFI2z016nTeX71GevH7qMZtlkxkIlXupxsLH-B_FZrLvTo5KfHY3tl737UY8cewxXe79-giqvXsAT5wMUPBUvw=w570-e365' },
+    { id: '2', status: 'Đã xác nhận', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/35_9dbee6331a3e4a458e5864084e90005d_master.jpg' },
+    { id: '3', status: 'Đang vận chuyển', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/1_cd3e91d598a942589a0c7cc6fde58b0b_master.jpg' },
+    { id: '4', status: 'Đã hủy', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://bizweb.dktcdn.net/thumb/1024x1024/100/386/441/products/2-197.jpg?v=1594705933387' },
+    { id: '5', status: 'Giao hàng thành công', name: 'ONE PIECE - TẬP 66', quantity: 2, date: "21/01/2024", image: 'https://bizweb.dktcdn.net/thumb/1024x1024/100/386/441/products/2-197.jpg?v=1594705933387' },
+    { id: '6', status: 'Đã xác nhận', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/1_cd3e91d598a942589a0c7cc6fde58b0b_master.jpg' },
+    { id: '7', status: 'Đang chờ xác nhận', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/35_9dbee6331a3e4a458e5864084e90005d_master.jpg' },
+    { id: '8', status: 'Đã xác nhận', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/1_cd3e91d598a942589a0c7cc6fde58b0b_master.jpg' },
+    { id: '9', status: 'Đang vận chuyển', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://lh3.googleusercontent.com/WaqKoYeaQ8qEP_b2zPfIVfgV7pGNuFI2z016nTeX71GevH7qMZtlkxkIlXupxsLH-B_FZrLvTo5KfHY3tl737UY8cewxXe79-giqvXsAT5wMUPBUvw=w570-e365' },
+    { id: '10', status: 'Đã hủy', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/1_cd3e91d598a942589a0c7cc6fde58b0b_master.jpg' },
+    { id: '11', status: 'Giao hàng thành công', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/35_9dbee6331a3e4a458e5864084e90005d_master.jpg' },
+    { id: '12', status: 'Đã xác nhận', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/1_dae9c089ea264180bdbc174a8fe26861_master.jpg' },
+
     //Thêm dữ liệu khác nếu cần
 ];
 
 const renderItem = ({ item }) => (
     <View style={styles.iteam}>
-        <Text style={{ fontSize: 15, fontWeight: 'bold' }} >{item.status}</Text>
-        <Text>{item.quantity} mặt hàng</Text>
-        <Text>Ngày đặt hàng : {item.date}</Text>
+        <Image
+            resizeMode="contain"
+            source={{ uri: item.image }}
+            style={styles.iteama}
+        />
+
+        <View style={styles.iteamb}>
+
+            <Text style={{ fontSize: 18, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode='tail'>{item.name}</Text>
+            <Text>SL : {item.quantity} </Text>
+            <Text>Ngày đặt hàng : {item.date}</Text>
+            <Text>28.000 đ </Text>
+            <Text style={{ fontWeight: "100" }} >{item.status}</Text>
+
+        </View>
+
+        {(item.status === 'Đang chờ xác nhận' || item.status === 'Đã xác nhận') && (
+            <TouchableOpacity
+                style={{
+                    width: wp('17%'),
+                    height: hp('5%'),
+                    backgroundColor: "#9DDC2D",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginRight: wp('2%'),
+                    marginTop: hp('10%'),
+                    borderRadius: 8,
+                    marginLeft: wp('5%')
+
+                }}
+            >
+                <Text>Hủy đơn</Text>
+            </TouchableOpacity>
+        )}
+
+        {(item.status === 'Giao hàng thành công') && (
+            <TouchableOpacity
+                style={{
+                    width: wp('17%'),
+                    height: hp('5%'),
+                    backgroundColor: "#9DDC2D",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginRight: wp('2%'),
+                    marginTop: hp('10%'),
+                    borderRadius: 8,
+                    marginLeft: wp('5%')
+
+                }}
+            >
+                <Text>Đánh giá</Text>
+            </TouchableOpacity>
+        )}
+
+        {(item.status === 'Đã hủy' || item.status === 'Đang vận chuyển') && (
+            <View
+                style={{
+                    width: wp('17%'),
+                    height: hp('5%'),
+                    marginRight: wp('2%'),
+                    marginTop: hp('10%'),
+                    marginLeft: wp('5%')
+                }}
+            >
+            </View>
+        )}
     </View>
+
 );
 
-const KeyExtractor = item => item.id;
+// const KeyExtractor = item => item.id;
 
 const History_Screens = () => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [status, setstatus] = useState('Đang chờ xác nhận')
+    const [status, setstatus] = useState('Đã hủy')
     const [datalist, setdatalist] = useState(data)
+
+    useEffect(() => {
+        setStatusFilter(status);
+    }, []);
+
     const setStatusFilter = status => {
-        if (status !== 'Đang chờ xác nhận') {
-            setdatalist([...data.filter(e => e.status === status)])
-        }
-        else {
-            setdatalist(data)
-        }
+        setdatalist([...data.filter(e => e.status === status)])
         setstatus(status)
     }
+
     return (
         <View style={styles.container}>
             {/* search */}
@@ -93,8 +171,50 @@ const History_Screens = () => {
 
 
             </View>
-            {/* tab */}
-            <SafeAreaView style={styles.listtab}>
+
+
+
+
+            <View style={{ flexDirection: "row", alignItems: "center",justifyContent:"center",marginTop:hp('5%') }}>
+                <Image
+                    source={require('../Image/order.jpg')}
+                    style={{
+                        height: hp('3%'),
+                        width: wp('7%'),
+                        marginRight:wp('2%')
+                    }}
+                    resizeMode="contain"
+                />
+                <Text style={{ fontSize: 25, fontWeight: "bold" }}>Đơn hàng</Text>
+
+            </View>
+
+
+
+
+
+
+
+            <View style={{ height: 50, marginTop: 50 }}>
+                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
+                    {
+                        listTab.map(e => (
+
+                            <Text
+                                onPress={() => setStatusFilter(e.status)}
+                                style={[styles.texttab, status === e.status && styles.texttabselection]} >
+                                {e.status}
+                            </Text>
+
+                        ))
+                    }
+                </ScrollView>
+
+            </View>
+
+
+
+            {/* <View style={styles.listtab}>
                 {
                     listTab.map(e => (
 
@@ -108,13 +228,20 @@ const History_Screens = () => {
                 }
 
 
-            </SafeAreaView>
+            </View> */}
 
-            <FlatList
-                data={datalist}
-                renderItem={renderItem}
-                keyExtractor={KeyExtractor}
-            />
+
+            <View style={{ height: hp('60%'), marginBottom: hp('5%') }}>
+                <FlatList
+                    data={datalist}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                />
+            </View>
+
+
+
+
 
         </View>
     )
@@ -125,10 +252,10 @@ export default History_Screens
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
-        alignItems: 'center',
         paddingBottom: hp('5%'),
-        alignItems: "center",
-        backgroundColor: "#FFFFFF"
+        backgroundColor: "#FFFFFF",
+        alignItems: "center"
+
     },
     V1: {
         height: hp('5%'),
@@ -162,40 +289,43 @@ const styles = StyleSheet.create({
 
     },
 
-    V2: {
-        height: hp('6%'),
-        width: wp('90%'),
-        borderColor: 'gray',
-        borderWidth: 1,
-        alignItems: "center",
-        marginTop: hp('5%'),
-        flexDirection: "row"
-    },
-    listtab: {
-        flexDirection: "row",
-        marginBottom: hp('2%')
-
-    },
     texttab: {
         fontSize: 16,
         marginLeft: wp('6%'),
         marginRight: wp('6%'),
-
         color: "#C0C0C0"
     },
     texttabselection: {
         color: "#9DDC2D"
     },
     iteam: {
-        width: wp('90%'),
-        height: hp('9%'),
+        flexDirection: "row",
+        width: wp('100%'),
+        height: hp('17%'),
         borderColor: 'gray',
         borderWidth: 1,
-        justifyContent: "center",
-        marginBottom: hp('1.5%'),
-        padding: wp('5%'),
+        marginBottom: hp('4%'),
+        justifyContent: "space-around",
+        alignItems: "center",
+        backgroundColor: "#F8F8FF",
+        borderBlockColor: "#9DDC2D",
 
     }
+    ,
+    iteama: {
+        width: wp('22%'),
+        height: hp('15%'),
+        marginLeft: wp('3%'),
+    },
+    iteamb: {
+        marginLeft: wp('5%'),
+        height: hp('17%'),
+        alignItems: "flex-start",
+        justifyContent: "space-around",
+        marginTop: hp('1%'),
+        marginBottom: hp('1%')
+    }
+
 
 
 })
