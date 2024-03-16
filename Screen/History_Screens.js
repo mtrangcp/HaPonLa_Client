@@ -2,134 +2,137 @@ import { ScrollView, StyleSheet, Text, View, Image, TouchableOpacity, ActivityIn
 import React, { useState, useEffect } from "react";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const listTab = [
     {
-        status: 'Đã hủy'
+        status: '0',
+        text: 'Đã hủy'
     },
     {
-        status: 'Đang chờ xác nhận'
+        status: '1',
+        text: 'Đang chờ xác nhận'
     },
     {
-        status: 'Đã xác nhận'
+        status: '2',
+        text: 'Đã xác nhận'
     },
     {
-        status: 'Đang vận chuyển'
+        status: '3',
+        text: 'Đang vận chuyển'
     },
     {
-        status: 'Giao hàng thành công'
-    },
-]
-
-const data = [
-    { id: '1', status: 'Đang chờ xác nhận', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://lh3.googleusercontent.com/WaqKoYeaQ8qEP_b2zPfIVfgV7pGNuFI2z016nTeX71GevH7qMZtlkxkIlXupxsLH-B_FZrLvTo5KfHY3tl737UY8cewxXe79-giqvXsAT5wMUPBUvw=w570-e365' },
-    { id: '2', status: 'Đã xác nhận', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/35_9dbee6331a3e4a458e5864084e90005d_master.jpg' },
-    { id: '3', status: 'Đang vận chuyển', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/1_cd3e91d598a942589a0c7cc6fde58b0b_master.jpg' },
-    { id: '4', status: 'Đã hủy', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://bizweb.dktcdn.net/thumb/1024x1024/100/386/441/products/2-197.jpg?v=1594705933387' },
-    { id: '5', status: 'Giao hàng thành công', name: 'ONE PIECE - TẬP 66', quantity: 2, date: "21/01/2024", image: 'https://bizweb.dktcdn.net/thumb/1024x1024/100/386/441/products/2-197.jpg?v=1594705933387' },
-    { id: '6', status: 'Đã xác nhận', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/1_cd3e91d598a942589a0c7cc6fde58b0b_master.jpg' },
-    { id: '7', status: 'Đang chờ xác nhận', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/35_9dbee6331a3e4a458e5864084e90005d_master.jpg' },
-    { id: '8', status: 'Đã xác nhận', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/1_cd3e91d598a942589a0c7cc6fde58b0b_master.jpg' },
-    { id: '9', status: 'Đang vận chuyển', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://lh3.googleusercontent.com/WaqKoYeaQ8qEP_b2zPfIVfgV7pGNuFI2z016nTeX71GevH7qMZtlkxkIlXupxsLH-B_FZrLvTo5KfHY3tl737UY8cewxXe79-giqvXsAT5wMUPBUvw=w570-e365' },
-    { id: '10', status: 'Đã hủy', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/1_cd3e91d598a942589a0c7cc6fde58b0b_master.jpg' },
-    { id: '11', status: 'Giao hàng thành công', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/35_9dbee6331a3e4a458e5864084e90005d_master.jpg' },
-    { id: '12', status: 'Đã xác nhận', quantity: 2, name: 'ONE PIECE - TẬP 66', date: "21/01/2024", image: 'https://product.hstatic.net/200000343865/product/1_dae9c089ea264180bdbc174a8fe26861_master.jpg' },
-
-    //Thêm dữ liệu khác nếu cần
+        status: '4',
+        text: 'Giao hàng thành công'
+    }
 ];
-
-const renderItem = ({ item }) => (
-    <View style={styles.iteam}>
-        <Image
-            resizeMode="contain"
-            source={{ uri: item.image }}
-            style={styles.iteama}
-        />
-
-        <View style={styles.iteamb}>
-
-            <Text style={{ fontSize: 18, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode='tail'>{item.name}</Text>
-            <Text>SL : {item.quantity} </Text>
-            <Text>Ngày đặt hàng : {item.date}</Text>
-            <Text>28.000 đ </Text>
-            <Text style={{ fontWeight: "100" }} >{item.status}</Text>
-
-        </View>
-
-        {(item.status === 'Đang chờ xác nhận' || item.status === 'Đã xác nhận') && (
-            <TouchableOpacity
-                style={{
-                    width: wp('17%'),
-                    height: hp('5%'),
-                    backgroundColor: "#9DDC2D",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginRight: wp('2%'),
-                    marginTop: hp('10%'),
-                    borderRadius: 8,
-                    marginLeft: wp('5%')
-
-                }}
-            >
-                <Text>Hủy đơn</Text>
-            </TouchableOpacity>
-        )}
-
-        {(item.status === 'Giao hàng thành công') && (
-            <TouchableOpacity
-                style={{
-                    width: wp('17%'),
-                    height: hp('5%'),
-                    backgroundColor: "#9DDC2D",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginRight: wp('2%'),
-                    marginTop: hp('10%'),
-                    borderRadius: 8,
-                    marginLeft: wp('5%')
-
-                }}
-            >
-                <Text>Đánh giá</Text>
-            </TouchableOpacity>
-        )}
-
-        {(item.status === 'Đã hủy' || item.status === 'Đang vận chuyển') && (
-            <View
-                style={{
-                    width: wp('17%'),
-                    height: hp('5%'),
-                    marginRight: wp('2%'),
-                    marginTop: hp('10%'),
-                    marginLeft: wp('5%')
-                }}
-            >
-            </View>
-        )}
-    </View>
-
-);
-
-// const KeyExtractor = item => item.id;
-
-const History_Screens = () => {
+const History_Screens = (props) => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [status, setstatus] = useState('Đã hủy')
-    const [datalist, setdatalist] = useState(data)
+    const [status, setstatus] = useState('2')
+    const [datalist, setdatalist] = useState([])
+    const [data, setdata] = useState([])
+    const [id, setid] = useState('');
+
+    //lấy id người dùng
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const userData = await AsyncStorage.getItem('Login_Screens');
+                if (userData) {
+                    const parsedUserData = JSON.parse(userData);
+                    setid(parsedUserData._id)
+                } else {
+                    console.log('Không tìm thấy dữ liệu người dùng trong AsyncStorage');
+                }
+            } catch (error) {
+                console.log('Lỗi khi lấy dữ liệu từ AsyncStorage:', error);
+            }
+        };
+        fetchData();
+
+    }, []);
+
+    //lấy đơn hàng
+    useEffect(() => {
+        laydonhang()
+    }, [id]);
 
     useEffect(() => {
         setStatusFilter(status);
-    }, []);
+    }, [data]);
+
+    const laydonhang = async () => {
+        try {
+            const response = await fetch('http://192.168.1.9:3000/api/bills');
+            const json = await response.json();
+            const filteredData = json.payload.data.filter(order => order.id_user === id);
+            setdata(filteredData);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const setStatusFilter = status => {
-        setdatalist([...data.filter(e => e.status === status)])
-        setstatus(status)
+        // Convert status to a number
+        const statusNumber = Number(status);
+        const filteredData = data.filter(e => e.status === statusNumber);
+        // console.log('Filtered Data:', filteredData)
+        setdatalist(filteredData);
+        setstatus(status);
     }
+
+
+    const renderItem = ({ item }) => (
+        <View style={{
+            flexDirection: "row",
+            width: wp('95%'),
+            height: hp('13%'),
+            // borderColor: 'gray',
+            borderWidth: 1,
+            justifyContent: "space-between",
+            alignItems: "center",
+            borderRadius:10
+
+        }}>
+            <View style={{ marginLeft: wp('3%') }}>
+                <Text style={{ fontSize: 15, fontWeight: "bold", marginBottom: hp('0.5%') }} >Mã đơn hàng </Text>
+                <Text style={{ marginBottom: hp('0.5%') }} >Ngày đặt hàng </Text>
+                <Text style={{ marginBottom: hp('0.5%') }} >Giờ đặt hàng </Text>
+                <Text style={{ marginBottom: hp('0.5%') }} >Giá niêm yết </Text>
+                <Text style={{ marginBottom: hp('0.5%') }} >Thành tiền</Text>
+
+            </View>
+
+            <View style={{ marginRight: wp('3%'), alignItems: "flex-end" }}>
+                    <Text style={{ fontSize: 15, fontWeight: "bold", }}>{item._id} </Text>
+                    <Text style={{ marginBottom: hp('0.5%') }}>{formatDate(item.create_at)}</Text>
+                    <Text style={{ marginBottom: hp('0.5%') }}>{formatTime(item.create_at)}</Text>
+                    <Text style={{ marginBottom: hp('0.5%') }}>{item.temp_price} đ</Text>
+                    <Text style={{ marginBottom: hp('0.5%'),fontWeight: "bold" }}>{item.real_price} đ</Text>
+            </View>
+
+
+
+        </View>
+    );
+
+    const formatDate = isoDate => {
+        const date = new Date(isoDate);
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+
+    const formatTime = isoDate => {
+        const date = new Date(isoDate);
+        return date.toLocaleTimeString(); // Trả về giờ phút giây (hh:mm:ss)
+    };
 
     return (
         <View style={styles.container}>
             {/* search */}
-            <View style={styles.V1}>
+            {/* <View style={styles.V1}>
                 <TouchableOpacity style={{ marginRight: 20 }}>
                     <Image
                         source={require('../Image/back.png')}
@@ -170,18 +173,18 @@ const History_Screens = () => {
                 </TouchableOpacity>
 
 
-            </View>
+            </View> */}
 
 
 
 
-            <View style={{ flexDirection: "row", alignItems: "center",justifyContent:"center",marginTop:hp('5%') }}>
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", marginTop: hp('5%') }}>
                 <Image
                     source={require('../Image/order.jpg')}
                     style={{
                         height: hp('3%'),
                         width: wp('7%'),
-                        marginRight:wp('2%')
+                        marginRight: wp('2%')
                     }}
                     resizeMode="contain"
                 />
@@ -194,7 +197,7 @@ const History_Screens = () => {
 
 
 
-
+            {/* Tab */}
             <View style={{ height: 50, marginTop: 50 }}>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
                     {
@@ -203,7 +206,7 @@ const History_Screens = () => {
                             <Text
                                 onPress={() => setStatusFilter(e.status)}
                                 style={[styles.texttab, status === e.status && styles.texttabselection]} >
-                                {e.status}
+                                {e.text}
                             </Text>
 
                         ))
@@ -238,10 +241,6 @@ const History_Screens = () => {
                     keyExtractor={item => item.id}
                 />
             </View>
-
-
-
-
 
         </View>
     )
@@ -298,34 +297,50 @@ const styles = StyleSheet.create({
     texttabselection: {
         color: "#9DDC2D"
     },
-    iteam: {
-        flexDirection: "row",
-        width: wp('100%'),
-        height: hp('17%'),
+    // iteam: {
+    //     flexDirection: "row",
+    //     width: wp('100%'),
+    //     height: hp('17%'),
+    //     borderColor: 'gray',
+    //     borderWidth: 1,
+    //     marginBottom: hp('4%'),
+    //     justifyContent: "space-around",
+    //     alignItems: "center",
+    //     backgroundColor: "#F8F8FF",
+    //     borderBlockColor: "#9DDC2D",
+
+    // }
+    // ,
+    // iteama: {
+    //     width: wp('22%'),
+    //     height: hp('15%'),
+    //     marginLeft: wp('3%'),
+    // },
+    // iteamb: {
+    //     marginLeft: wp('5%'),
+    //     height: hp('17%'),
+    //     alignItems: "flex-start",
+    //     justifyContent: "space-around",
+    //     marginTop: hp('1%'),
+    //     marginBottom: hp('1%')
+    // }
+    iteam2: {
+        width: wp('90%'),
+        height: hp('9%'),
         borderColor: 'gray',
         borderWidth: 1,
-        marginBottom: hp('4%'),
-        justifyContent: "space-around",
-        alignItems: "center",
-        backgroundColor: "#F8F8FF",
-        borderBlockColor: "#9DDC2D",
+        justifyContent: "center",
+        marginBottom: hp('1.5%'),
+        padding: wp('5%'),
 
     }
-    ,
-    iteama: {
-        width: wp('22%'),
-        height: hp('15%'),
-        marginLeft: wp('3%'),
-    },
-    iteamb: {
-        marginLeft: wp('5%'),
-        height: hp('17%'),
-        alignItems: "flex-start",
-        justifyContent: "space-around",
-        marginTop: hp('1%'),
-        marginBottom: hp('1%')
-    }
-
 
 
 })
+
+// let url = 'http://192.168.1.9:3000/api/bills'
+// const response = await fetch(url)
+// const json = await response.json(); // Chuyển đổi phản hồi thành đối tượng JavaScript
+// console.log('json nè:' +json.payload.data)
+//  setdata(json.payload.data)
+//   console.log(data)

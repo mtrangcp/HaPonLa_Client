@@ -44,8 +44,8 @@ const User_Information_Screens = (props) => {
                     // setgender(parsedUserData.gender);
 
                     setid(parsedUserData._id)
-                    console.log(parsedUserData._id)
-                    console.log(id)
+                    // console.log(parsedUserData._id)
+                    // console.log(id)
 
                     let url_api = 'http://192.168.1.9:3000/api/user/' + parsedUserData._id;
                     // console.log(url_api)
@@ -75,8 +75,8 @@ const User_Information_Screens = (props) => {
 
     const laythongtin = async () => {
         let url = 'http://192.168.1.9:3000/api/user/' + id;
-        console.log(id)
-        console.log(url)
+        // console.log(id)
+        // console.log(url)
         const response = await fetch(url); // load dữ liệu
         const json = await response.json(); // chuyển dữ liệu thành json
         // console.log(json)
