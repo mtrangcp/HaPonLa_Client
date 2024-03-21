@@ -1,35 +1,84 @@
 import { ScrollView, StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator, FlatList, Alert, Modal, Button, TextInput, TouchableHighlight } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const data = [
-    { id: '1', name: 'Tô điểm sắc màu', quantity: 2, price: "321.000 đ", image: 'https://product.hstatic.net/200000294254/product/bia_to_diem_sac_mau_54ad95aeb042488ba6566d44a4fff453.jpg' },
-    { id: '2', name: 'Tô điểm sắc màu', quantity: 2, price: "321.000 đ", image: 'https://product.hstatic.net/200000294254/product/bia_to_diem_sac_mau_54ad95aeb042488ba6566d44a4fff453.jpg' },
-    { id: '3', name: 'Tô điểm sắc màu', quantity: 2, price: "321.000 đ", image: 'https://product.hstatic.net/200000294254/product/bia_to_diem_sac_mau_54ad95aeb042488ba6566d44a4fff453.jpg' },
-    { id: '4', name: 'Tô điểm sắc màu', quantity: 2, price: "321.000 đ", image: 'https://product.hstatic.net/200000294254/product/bia_to_diem_sac_mau_54ad95aeb042488ba6566d44a4fff453.jpg' },
-    { id: '5', name: 'Tô điểm sắc màu', quantity: 2, price: "321.000 đ", image: 'https://product.hstatic.net/200000294254/product/bia_to_diem_sac_mau_54ad95aeb042488ba6566d44a4fff453.jpg' },
-
-    //Thêm dữ liệu khác nếu cần
-];
-
 const renderItem = ({ item }) => (
     <View style={styles.iteam}>
-        <Image source={{ uri: item.image }} style={styles.i3} resizeMode="contain" />
+        <Image source={{ uri: item.image[0] }} style={styles.i3} resizeMode="contain" />
         <View style={{ marginLeft: wp('4%'), }}>
             <Text style={{ fontSize: 15, fontWeight: 'bold', }} >{item.name}</Text>
-            <Text style={{ marginTop: hp('1%') }}>{item.price}</Text>
+            <Text style={{ marginTop: hp('1%') }}>{formatCurrency(item.price)} VND</Text>
             <Text style={{ marginTop: hp('1%') }}>Số lượng : {item.quantity}</Text>
         </View>
+
 
     </View>
 );
 
-const KeyExtractor = item => item.id;
+const formatCurrency = (amount) => {
+    // Định dạng số tiền thành chuỗi
+    const currencyString = amount.toString();
+    // Thêm dấu phân cách giữa hàng nghìn, triệu, tỷ...
+    const formattedCurrency = currencyString.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return formattedCurrency;
+};
 
-const Order_Details_Screens = () => {
+
+const Order_Details_Screens = (props) => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [datalist, setdatalist] = useState(data)
+    const [datalist, setdatalist] = useState([])
+
+
+    const [temp_price, settemp_price] = useState(props.route.params.billchitiet.temp_price);
+    const [real_price, setreal_price] = useState(props.route.params.billchitiet.real_price)
+    const [status, setstatus] = useState(props.route.params.billchitiet.status)
+    const [id_discount, setid_discount] = useState(props.route.params.billchitiet.id_discount)
+    const [detail, setdetail] = useState(props.route.params.billchitiet.detail)
+    const [method, setmethod] = useState(props.route.params.billchitiet.method)
+
+
+
+    useEffect(() => {
+        laybilliteam();
+    }, []);
+
+    const laybilliteam = async () => {
+        try {
+            const billItems = [];
+            for (const itemId of detail) {
+                const response = await fetch(`http://192.168.1.9:3000/api/bill_items/${itemId}`);
+                const json = await response.json();
+                const itemData = json.payload.data;
+                billItems.push(itemData);
+                // Call API with id_book
+                const bookResponse = await fetch(`http://192.168.1.9:3000/api/books/${itemData.id_book}`);
+                const bookJson = await bookResponse.json();
+                const bookData = bookJson.payload.data;
+                // Combine billItems and bookData
+
+                //sử dụng spread operator (...) để tạo một đối tượng mới có tên là combinedData. Toán tử spread (...) trong JavaScript được sử dụng để sao chép các thuộc tính của một đối tượng hoặc một mảng vào một đối tượng hoặc mảng khác. Trong trường hợp này, ...itemData sao chép tất cả các thuộc tính của itemData, và ...bookData sao chép tất cả các thuộc tính của bookData. Kết quả là một đối tượng mới (combinedData) có chứa tất cả các thuộc tính từ cả itemData và bookData.
+                // const combinedData = { ...itemData, ...bookData };     
+                //cập nhật state datalist bằng cách sử dụng hàm callback trong setdatalist. Hàm callback này nhận vào tham số là prevDataList, đại diện cho giá trị trước đó của datalist. Bằng cách sử dụng spread operator [...prevDataList, combinedData], chúng ta tạo một mảng mới bằng cách sao chép tất cả các phần tử từ mảng trước đó (prevDataList) và thêm combinedData vào cuối mảng mới này. Cuối cùng, setdatalist được gọi để cập nhật state datalist với mảng mới đã được tạo ra.
+                // setdatalist(prevDataList => [...prevDataList, combinedData]);
+                const combinedData = itemData && bookData ? { ...itemData, ...bookData } : null;
+                if (combinedData) {
+                    setdatalist(prevDataList => [...prevDataList, combinedData]);
+                } else {
+                    console.error('itemData or bookData is undefined');
+                }
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
+
+
+    //format tiền
+    
+
     return (
         <View style={styles.container}>
             {/* search */}
@@ -81,7 +130,7 @@ const Order_Details_Screens = () => {
                     style={styles.V2}
                     data={datalist}
                     renderItem={renderItem}
-                    keyExtractor={KeyExtractor}
+                    keyExtractor={item => item.id}
                 />
             </View>
 
@@ -93,43 +142,36 @@ const Order_Details_Screens = () => {
 
                         <View >
                             <Text style={styles.T1} >Tổng tiền hàng</Text>
-                            <Text style={styles.T1}>Phí vận chuyển</Text>
+
                             <Text style={styles.T1}>Mã giảm giá</Text>
                         </View>
 
                         <View >
-                            <Text style={styles.T2}>598.000đ</Text>
-                            <Text style={styles.T2}>40.000đ</Text>
-                            <Text style={styles.T2}>128.000đ</Text>
+                            <Text style={styles.T2}>{formatCurrency(temp_price)} VND</Text>
+
+                            <Text style={styles.T2}>{id_discount}</Text>
 
                         </View>
 
 
 
                     </View>
-                    <Text style={{ color: "#808080", }}> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </Text>
+                    {/* <Text style={{ color: "#808080", }}> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text> */}
                     <View style={styles.V4}>
                         <Text style={styles.T3}>Tổng thanh toán </Text>
-                        <Text style={styles.T4}>457.000đ</Text>
+                        <Text style={styles.T4}>{formatCurrency(real_price)} VND</Text>
                     </View>
                     <View style={styles.V4}>
                         <View>
-                            <Text style={styles.T1} >Phương thứ thanh toán : thanh toán khi nhận hàng</Text>
+                            <Text style={styles.T1} >Phương thứ thanh toán : {method}</Text>
                             <Text style={styles.T1}>Địa chỉ : Hà Nội</Text>
                             <Text style={styles.T1}>Người nhận : Hà Trang</Text>
-                            <Text style={styles.T1}>Trạng thái : Đang chờ xác nhận</Text>
+                            <Text style={styles.T1}>Trạng thái : {status}</Text>
                         </View>
 
                     </View>
 
                 </View>
-
-
-
-
-
-
-
 
             </ScrollView>
 
@@ -191,7 +233,7 @@ const styles = StyleSheet.create({
         marginBottom: hp('1.5%'),
         flexDirection: 'row',
         justifyContent: "flex-start",
-        borderRadius: '10'
+        borderRadius: 10
 
     },
     V2:
@@ -207,7 +249,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginBottom: hp('1.5%'),
         marginTop: hp('1.5%'),
-        borderRadius: '10',
+        borderRadius: 10,
 
 
 

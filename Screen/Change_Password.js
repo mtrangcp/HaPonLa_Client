@@ -128,11 +128,6 @@ const Change_Password = (props) => {
                         />
 
                     </TouchableOpacity>
-
-
-
-
-
                 </View>
                 {/* mật khẩu mới */}
                 <View style={styles.input}>
@@ -193,6 +188,7 @@ const Change_Password = (props) => {
                 <TouchableHighlight
                     onPress={doimatkhau}
                     style={styles.button}
+                    underlayColor="#00EE00"
                 >
                     <View >
                         <Text style={{ color: "#fff", fontWeight: 'bold', fontSize: 18, }} >Đổi mật khẩu</Text>

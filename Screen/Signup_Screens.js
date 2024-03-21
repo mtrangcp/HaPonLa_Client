@@ -260,6 +260,7 @@ const Signup_Screens = () => {
                 <TouchableHighlight
                     onPress={dangky}
                     style={styles.button}
+                    underlayColor="#00EE00"
 
                 >
                     <View >
