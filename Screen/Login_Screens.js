@@ -113,6 +113,7 @@ const Login_Screens = (props) => {
       <TouchableHighlight
         onPress={dangnhap}
         style={styles.button}
+        underlayColor="#00EE00"
       >
         <View >
           <Text style={{ color: "#fff", fontWeight: 'bold', fontSize: 18, }} >Sign In</Text>

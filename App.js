@@ -19,7 +19,9 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen options={{ headerShown: false }} name="Welcome_Screens" component={Welcome_Screens} />
+      <Stack.Screen options={{ headerShown: false }} name="Welcome_Screens" component={Welcome_Screens} />
+      <Stack.Screen options={{ headerShown: false }} name="Order_Details_Screens" component={Order_Details_Screens} />
+        
         <Stack.Screen options={{ headerShown: false }} name="History_Screens" component={History_Screens} />
         <Stack.Screen options={{ headerShown: false, gestureEnabled: false }} name="Login_Screens" component={Login_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Change_Password" component={Change_Password} />
@@ -29,7 +31,7 @@ function App() {
         <Stack.Screen options={{ headerShown: false, gestureEnabled: false }} name="Account_Screens" component={Account_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Category_Screens" component={Category_Screens} />
         <Stack.Screen options={{ headerShown: false }} name="Detail_Screens" component={Detail_Screens} />
-        <Stack.Screen options={{ headerShown: false }} name="Order_Details_Screens" component={Order_Details_Screens} />
+        
         {/* tttttttttttttttttttttttttttttttttt */}
         {/* Thêm các Screen khác nếu cần */}
       </Stack.Navigator>

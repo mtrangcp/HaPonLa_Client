@@ -128,7 +128,7 @@ const User_Information_Screens = (props) => {
             return;
         }
         let url_api = 'http://192.168.1.9:3000/api/user/update/' + id;
-        console.log(url_api)
+        // console.log(url_api)
         fetch(url_api, {
             method: 'PUT',
             headers: {
@@ -142,21 +142,14 @@ const User_Information_Screens = (props) => {
                 setModalVisible(false)
                 setModalVisible2(false)
                 setModalVisible3(false)
+                laythongtin()
 
             })
             .catch((ex) => {
                 console.log(ex);
             });
-        console.log(fullname);
+        
     }
-
-
-    const handleUpdateUser = async () => {
-        await Sua();
-        await laythongtin();
-    }
-
-
     return (
         <View style={styles.container}>
             <View style={styles.V1}>
@@ -316,7 +309,7 @@ const User_Information_Screens = (props) => {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.buttonmodal} activeOpacity={0.7}
-                            onPress={handleUpdateUser} >
+                            onPress={Sua} >
                                 <Text style={styles.textbttnmodal} >OK</Text>
                             </TouchableOpacity>
 
@@ -358,7 +351,7 @@ const User_Information_Screens = (props) => {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.buttonmodal} activeOpacity={0.7}
-                                onPress={handleUpdateUser}
+                                onPress={Sua}
                             >
                                 <Text style={styles.textbttnmodal} >OK</Text>
                             </TouchableOpacity>
@@ -404,7 +397,7 @@ const User_Information_Screens = (props) => {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.buttonmodal} activeOpacity={0.7}
-                                onPress={handleUpdateUser}>
+                                onPress={Sua}>
                                 <Text style={styles.textbttnmodal} >OK</Text>
                             </TouchableOpacity>
 
