@@ -17,7 +17,22 @@ const Category_Screens = ( ) => {
     'Tình cảm': [
       { id: 1, name: 'Sách 1', image: require('../Image/tests1.jpg'), price: 100 },
       { id: 2, name: 'Sách 2', image: require('../Image/tests1.jpg'), price: 120 },
-      { id: 3, name: 'Sách 3', image: require('../Image/tests1.jpg'), price: 90 }
+      { id: 3, name: 'Sách 3', image: require('../Image/tests1.jpg'), price: 90 },
+      { id: 7, name: 'Sách 1', image: require('../Image/tests1.jpg'), price: 100 },
+      { id: 8, name: 'Sách 2', image: require('../Image/tests1.jpg'), price: 120 },
+      { id: 9, name: 'Sách 3', image: require('../Image/tests1.jpg'), price: 90 },
+      { id: 13, name: 'Sách 1', image: require('../Image/tests1.jpg'), price: 100 },
+      { id: 20, name: 'Sách 2', image: require('../Image/tests1.jpg'), price: 120 },
+      { id: 30, name: 'Sách 3', image: require('../Image/tests1.jpg'), price: 90 },
+      { id: 70, name: 'Sách 1', image: require('../Image/tests1.jpg'), price: 100 },
+      { id: 80, name: 'Sách 2', image: require('../Image/tests1.jpg'), price: 120 },
+      { id: 90, name: 'Sách 3', image: require('../Image/tests1.jpg'), price: 90 },
+      { id: 11, name: 'Sách 1', image: require('../Image/tests1.jpg'), price: 100 },
+      { id: 22, name: 'Sách 2', image: require('../Image/tests1.jpg'), price: 120 },
+      { id: 33, name: 'Sách 3', image: require('../Image/tests1.jpg'), price: 90 },
+      { id: 73, name: 'Sách 1', image: require('../Image/tests1.jpg'), price: 100 },
+      { id: 83, name: 'Sách 2', image: require('../Image/tests1.jpg'), price: 120 },
+      { id: 93, name: 'Sách 3', image: require('../Image/tests1.jpg'), price: 90 }
     ],
     'Trinh thám': [
       { id: 4, name: 'Sách 4', image: require('../Image/tests1.jpg'), price: 110 },
@@ -29,15 +44,16 @@ const Category_Screens = ( ) => {
       { id: 8, name: 'Sách 8', image: require('../Image/tests1.jpg'), price: 100 },
       { id: 9, name: 'Sách 9', image: require('../Image/tests1.jpg'), price: 85 }
     ]
+    
   };
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('Detail_Screens', { book: item })}
-      style={{ padding: 10, flexDirection: 'row', alignItems: 'center' }}>
-      <Image source={item.image} style={{ width: 50, height: 70, marginRight: 10 }} />
-      <Text>{item.name}</Text>
-      <Text style={{ marginLeft: 'auto' }}>Price: ${item.price}</Text>
+  const renderBookItem = ({ item }) => (
+    <TouchableOpacity 
+    onPress={() => navigation.navigate('Detail_Screens', { book: item })}
+    style={styles.bookItem}>
+      <Image source={item.image} style={styles.bookImage} />
+      <Text style={styles.bookName}>{item.name}</Text>
+      <Text style={styles.bookPrice}>${item.price}</Text>
     </TouchableOpacity>
   );
 
@@ -118,8 +134,24 @@ const Category_Screens = ( ) => {
         <FlatList
           data={filteredBooks.length > 0 ? filteredBooks : bookData[selectedCategory]}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={renderItem}
+          numColumns={3}
+          renderItem={renderBookItem}
         />
+      </View>
+       {/* Bottom navigation */}
+       <View style={styles.bottomNavigation}>
+          <TouchableOpacity onPress={() => navigation.navigate('Home_Screens')}>
+              <Image source={require('../Image/home.png')} style={styles.bottomIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Category_Screens')}>
+              <Image source={require('../Image/category2.png')} style={styles.bottomIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Cart_Screens')}>
+              <Image source={require('../Image/cart.png')} style={styles.bottomIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('User_Information_Screens')}>
+              <Image source={require('../Image/user.png')} style={styles.bottomIcon} />
+          </TouchableOpacity>
       </View>
     </View>
   )
@@ -165,5 +197,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginRight: wp('3%'),
+  },
+  bottomNavigation: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: 60,
+  },
+  bottomIcon: {
+    width: 30,
+    height: 30,
+    margin: 30
+  },
+  bookListContainer: {
+    paddingHorizontal: wp('5%'),
+    paddingVertical: hp('2%'),
+    
+  },
+  bookItem: {
+    marginRight: wp('4%'),
+    marginLeft: wp('4%'),
+    
+  },
+  bookImage: {
+    width: 75,
+    height: 105,
+    marginRight: 10
+  },
+  bookName: {
+    marginTop: hp('1%'),
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'green'
+  },
+  bookPrice: {
+    fontSize: 14,
+    fontWeight:'bold'
   },
 })
