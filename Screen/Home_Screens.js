@@ -1,50 +1,41 @@
 import { ScrollView, StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator, FlatList, Alert, Modal, Button, TextInput, TouchableHighlight } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
 
-const Category_Screens = ( ) => {
+const Home_Screens = ( ) => {
   const navigation = useNavigation();
 
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [selectedCategory, setSelectedCategory] = useState('Tình cảm'); // Thể loại được chọn
+  const [books, setBooks] = useState([
+    { id: 1, name: 'Book 1', price: '10', image: require('../Image/tests1.jpg') },
+    { id: 2, name: 'Book 2', price: '15', image: require('../Image/tests1.jpg') },
+    { id: 3, name: 'Book 3', price: '20', image: require('../Image/tests1.jpg') },
+    { id: 4, name: 'Book 1', price: '10', image: require('../Image/tests1.jpg') },
+    { id: 5, name: 'Book 2', price: '15', image: require('../Image/tests1.jpg') },
+    { id: 6, name: 'Book 3', price: '20', image: require('../Image/tests1.jpg') },
+    // Add more books as needed
+  ]);
 
-  const [filteredBooks, setFilteredBooks] = useState([]);
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0); // State để lưu trữ chỉ mục của banner hiện tại
+  const banners = [require('../Image/banner1.png'), require('../Image/banner2.png'), require('../Image/banner1.png')]; // Danh sách các banner
+
+    // Sử dụng useEffect để thiết lập việc chuyển đổi tự động giữa các banner
+    useEffect(() => {
+        const interval = setInterval(() => {
+        // Chuyển đến banner tiếp theo
+        setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % banners.length);
+        }, 5000); // Thời gian chuyển đổi, ở đây là 5000ms (5 giây)
+
+        // Xóa interval khi component bị unmount
+        return () => clearInterval(interval);
+    }, []); 
 
 
-  const bookData = {
-    'Tình cảm': [
-      { id: 1, name: 'Sách 1', image: require('../Image/tests1.jpg'), price: 100 },
-      { id: 2, name: 'Sách 2', image: require('../Image/tests1.jpg'), price: 120 },
-      { id: 3, name: 'Sách 3', image: require('../Image/tests1.jpg'), price: 90 },
-      { id: 7, name: 'Sách 1', image: require('../Image/tests1.jpg'), price: 100 },
-      { id: 8, name: 'Sách 2', image: require('../Image/tests1.jpg'), price: 120 },
-      { id: 9, name: 'Sách 3', image: require('../Image/tests1.jpg'), price: 90 },
-      { id: 13, name: 'Sách 1', image: require('../Image/tests1.jpg'), price: 100 },
-      { id: 20, name: 'Sách 2', image: require('../Image/tests1.jpg'), price: 120 },
-      { id: 30, name: 'Sách 3', image: require('../Image/tests1.jpg'), price: 90 },
-      { id: 70, name: 'Sách 1', image: require('../Image/tests1.jpg'), price: 100 },
-      { id: 80, name: 'Sách 2', image: require('../Image/tests1.jpg'), price: 120 },
-      { id: 90, name: 'Sách 3', image: require('../Image/tests1.jpg'), price: 90 },
-      { id: 11, name: 'Sách 1', image: require('../Image/tests1.jpg'), price: 100 },
-      { id: 22, name: 'Sách 2', image: require('../Image/tests1.jpg'), price: 120 },
-      { id: 33, name: 'Sách 3', image: require('../Image/tests1.jpg'), price: 90 },
-      { id: 73, name: 'Sách 1', image: require('../Image/tests1.jpg'), price: 100 },
-      { id: 83, name: 'Sách 2', image: require('../Image/tests1.jpg'), price: 120 },
-      { id: 93, name: 'Sách 3', image: require('../Image/tests1.jpg'), price: 90 }
-    ],
-    'Trinh thám': [
-      { id: 4, name: 'Sách 4', image: require('../Image/tests1.jpg'), price: 110 },
-      { id: 5, name: 'Sách 5', image: require('../Image/tests1.jpg'), price: 130 },
-      { id: 6, name: 'Sách 6', image: require('../Image/tests1.jpg'), price: 95 }
-    ],
-    'Manga': [
-      { id: 7, name: 'Sách 7', image: require('../Image/tests1.jpg'), price: 80 },
-      { id: 8, name: 'Sách 8', image: require('../Image/tests1.jpg'), price: 100 },
-      { id: 9, name: 'Sách 9', image: require('../Image/tests1.jpg'), price: 85 }
-    ]
-    
+  
+  const handleSearch = () => {
+
   };
 
   const renderBookItem = ({ item }) => (
@@ -57,13 +48,6 @@ const Category_Screens = ( ) => {
     </TouchableOpacity>
   );
 
-  
-  const handleSearch = () => {
-    const filteredBooks = bookData[selectedCategory].filter(book =>
-        book.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredBooks(filteredBooks);
-  };
 
 
 
@@ -113,38 +97,45 @@ const Category_Screens = ( ) => {
         </TouchableOpacity>
       </View>
       
-      <View style={{ flex: 1 }}>
-        {/* Hiển thị các tab thể loại */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', paddingVertical: 10 }}>
-          {Object.keys(bookData).map((category, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => setSelectedCategory(category)}
-              style={{
-                paddingHorizontal: 20,
-                paddingVertical: 10,
-                borderRadius: 10
-              }}>
-              <Text style={{ fontSize: 18, fontWeight: selectedCategory === category ? 'bold' : 'normal', color: selectedCategory === category ? 'green' : 'black' }}>{category}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {/* Hiển thị danh sách sách dựa trên thể loại được chọn */}
-        <FlatList
-          data={filteredBooks.length > 0 ? filteredBooks : bookData[selectedCategory]}
-          keyExtractor={(item, index) => index.toString()}
-          numColumns={3}
-          renderItem={renderBookItem}
+      <View style={styles.bannerContainer}>
+        <Image
+          source={banners[currentBannerIndex]}
+          style={styles.bannerImage}
+          resizeMode="contain"
         />
       </View>
+
+
+      
+      <View style={{ flex: 1 }}>
+        <View style={styles.bookListContainer}>
+          <FlatList
+            data={books}
+            renderItem={renderBookItem}
+            keyExtractor={item => item.id.toString()}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+
+        <View style={styles.bookListContainer}>
+          <FlatList
+            data={books}
+            renderItem={renderBookItem}
+            keyExtractor={item => item.id.toString()}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+      </View>
+
        {/* Bottom navigation */}
        <View style={styles.bottomNavigation}>
           <TouchableOpacity onPress={() => navigation.navigate('Home_Screens')}>
-              <Image source={require('../Image/home.png')} style={styles.bottomIcon} />
+              <Image source={require('../Image/home2.png')} style={styles.bottomIcon} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Category_Screens')}>
-              <Image source={require('../Image/category2.png')} style={styles.bottomIcon} />
+              <Image source={require('../Image/category.png')} style={styles.bottomIcon} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Cart_Screens')}>
               <Image source={require('../Image/cart.png')} style={styles.bottomIcon} />
@@ -157,7 +148,7 @@ const Category_Screens = ( ) => {
   )
 }
 
-export default Category_Screens
+export default Home_Screens
 
 const styles = StyleSheet.create({
   container: {
@@ -209,15 +200,26 @@ const styles = StyleSheet.create({
     height: 30,
     margin: 30
   },
+  bannerContainer: {
+    width: wp('100%'),
+    height: hp('20%'),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bannerImage: {
+    width: '100%',
+    height: '100%',
+  },
+
+
+
   bookListContainer: {
     paddingHorizontal: wp('5%'),
     paddingVertical: hp('2%'),
-    
+    height:185
   },
   bookItem: {
     marginRight: wp('4%'),
-    marginLeft: wp('4%'),
-    
   },
   bookImage: {
     width: 75,

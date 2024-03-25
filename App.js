@@ -11,6 +11,7 @@ import Account_Screens from './Screen/Account_Screens';
 import User_Information_Screens from './Screen/User_Information_Screens';
 import Address_Screens from './Screen/Address_Screens';
 import Change_Password from './Screen/Change_Password';
+import Home_Screens from './Screen/Home_Screens';
 
 
 const Stack = createNativeStackNavigator();
@@ -19,8 +20,9 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen options={{ headerShown: false }} name="Welcome_Screens" component={Welcome_Screens} />
-      <Stack.Screen options={{ headerShown: false }} name="Order_Details_Screens" component={Order_Details_Screens} />
+        <Stack.Screen options={{ headerShown: false }} name="Home_Screens" component={Home_Screens} />
+        <Stack.Screen options={{ headerShown: false }} name="Welcome_Screens" component={Welcome_Screens} />
+        <Stack.Screen options={{ headerShown: false }} name="Order_Details_Screens" component={Order_Details_Screens} />
         
         <Stack.Screen options={{ headerShown: false }} name="History_Screens" component={History_Screens} />
         <Stack.Screen options={{ headerShown: false, gestureEnabled: false }} name="Login_Screens" component={Login_Screens} />

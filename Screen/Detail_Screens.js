@@ -1,8 +1,11 @@
 import { ScrollView, StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator, FlatList, Alert, Modal, Button, TextInput, TouchableHighlight } from "react-native";
 import React, { useState } from "react";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
 
-const Detail_Screens = ({route, navigation}) => {
+const Detail_Screens = ({route}) => {
+    const navigation = useNavigation();
+    
     const [searchQuery, setSearchQuery] = useState('');
 
     const { book } = route.params;
@@ -95,8 +98,22 @@ const Detail_Screens = ({route, navigation}) => {
                         </View>
                     </TouchableHighlight>
                 </View>
-
-
+                
+                {/* Bottom navigation */}
+                {/* <View style={styles.bottomNavigation}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Home_Screens')}>
+                        <Image source={require('../Image/home.png')} style={styles.bottomIcon} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Category_Screens')}>
+                        <Image source={require('../Image/category.png')} style={styles.bottomIcon} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Cart_Screens')}>
+                        <Image source={require('../Image/cart.png')} style={styles.bottomIcon} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('User_Information_Screens')}>
+                        <Image source={require('../Image/user.png')} style={styles.bottomIcon} />
+                    </TouchableOpacity>
+                </View> */}
 
             </ScrollView>
         </View>
@@ -179,4 +196,15 @@ const styles = StyleSheet.create({
         padding: 10,
         justifyContent: "center"
     },
+    bottomNavigation: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        height: 60,
+      },
+      bottomIcon: {
+        width: 30,
+        height: 30,
+        margin: 30
+      },
 })
