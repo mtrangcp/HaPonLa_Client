@@ -125,7 +125,7 @@ const Category_Screens = ( ) => {
                 paddingVertical: 10,
                 borderRadius: 10
               }}>
-              <Text style={{ fontSize: 18, fontWeight: selectedCategory === category ? 'bold' : 'normal', color: selectedCategory === category ? 'green' : 'black' }}>{category}</Text>
+              <Text style={{ fontSize: 20, fontWeight: selectedCategory === category ? 'bold' : 'normal', color: selectedCategory === category ? 'green' : 'black' }}>{category}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -202,12 +202,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: 60,
+    height: 30,
   },
   bottomIcon: {
-    width: 30,
-    height: 30,
-    margin: 30
+    width: 35,
+    height: 35,
+    margin: 35,
+    marginBottom:10
   },
   bookListContainer: {
     paddingHorizontal: wp('5%'),
@@ -215,9 +216,9 @@ const styles = StyleSheet.create({
     
   },
   bookItem: {
-    marginRight: wp('4%'),
-    marginLeft: wp('4%'),
-    
+    marginRight: 25,
+    marginLeft: 25,
+    marginBottom:25
   },
   bookImage: {
     width: 75,
