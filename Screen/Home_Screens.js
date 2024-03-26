@@ -8,6 +8,8 @@ const Home_Screens = ( ) => {
 
   const [searchQuery, setSearchQuery] = useState('');
 
+  const [filteredBooks, setFilteredBooks] = useState([]);
+
   const [books, setBooks] = useState([
     { id: 1, name: 'Book 1', price: '10', image: require('../Image/tests1.jpg') },
     { id: 2, name: 'Book 2', price: '15', image: require('../Image/tests1.jpg') },
@@ -34,10 +36,14 @@ const Home_Screens = ( ) => {
 
 
   
-  const handleSearch = () => {
-
-  };
-
+    const handleSearch = () => {
+      const query = searchQuery.toLowerCase();
+      const filteredBooks = books.filter(book =>
+        book.name.toLowerCase().includes(query)
+      );
+      setFilteredBooks(filteredBooks);
+    };
+    
   const renderBookItem = ({ item }) => (
     <TouchableOpacity 
     onPress={() => navigation.navigate('Detail_Screens', { book: item })}
@@ -97,20 +103,44 @@ const Home_Screens = ( ) => {
         </TouchableOpacity>
       </View>
       
-      <View style={styles.bannerContainer}>
-        <Image
-          source={banners[currentBannerIndex]}
-          style={styles.bannerImage}
-          resizeMode="contain"
-        />
-      </View>
-
-
       
-      <View style={{ flex: 1 }}>
+
+      <ScrollView style={{ flex: 1 }}>
+
+        <View style={styles.bannerContainer}>
+          <Image
+            source={banners[currentBannerIndex]}
+            style={styles.bannerImage}
+            resizeMode="contain"
+          />
+        </View>
+
+        <View style={{ backgroundColor: 'green', height:40, justifyContent: 'center', alignItems: 'center', marginStart:50, marginEnd: 50}}>
+          <Text style={{ color: 'white', fontSize:20, fontWeight: 'bold',  }}>
+            Sách mới
+          </Text>
+        </View>
+
         <View style={styles.bookListContainer}>
           <FlatList
-            data={books}
+            data={filteredBooks.length > 0 ? filteredBooks : books}
+            renderItem={renderBookItem}
+            keyExtractor={item => item.id.toString()}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
+
+        </View>
+
+        <View style={{ backgroundColor: 'green', height:40, justifyContent: 'center', alignItems: 'center', marginStart:50, marginEnd: 50}}>
+          <Text style={{ color: 'white', fontSize:20, fontWeight: 'bold',  }}>
+            Sách mới
+          </Text>
+        </View>
+
+        <View style={styles.bookListContainer}>
+          <FlatList
+            data={filteredBooks.length > 0 ? filteredBooks : books}
             renderItem={renderBookItem}
             keyExtractor={item => item.id.toString()}
             horizontal
@@ -118,16 +148,39 @@ const Home_Screens = ( ) => {
           />
         </View>
 
+        <View style={{ backgroundColor: 'green', height:40, justifyContent: 'center', alignItems: 'center', marginStart:50, marginEnd: 50}}>
+          <Text style={{ color: 'white', fontSize:20, fontWeight: 'bold',  }}>
+            Sách mới
+          </Text>
+        </View>
+
         <View style={styles.bookListContainer}>
           <FlatList
-            data={books}
+            data={filteredBooks.length > 0 ? filteredBooks : books}
             renderItem={renderBookItem}
             keyExtractor={item => item.id.toString()}
             horizontal
             showsHorizontalScrollIndicator={false}
           />
         </View>
-      </View>
+
+        <View style={{ backgroundColor: 'green', height:40, justifyContent: 'center', alignItems: 'center', marginStart:50, marginEnd: 50}}>
+          <Text style={{ color: 'white', fontSize:20, fontWeight: 'bold',  }}>
+            Gợi ý hôm nay
+          </Text>
+        </View>
+
+        <View style={styles.bookListContainer2}>
+          <FlatList
+            data={filteredBooks.length > 0 ? filteredBooks : books}
+            renderItem={renderBookItem}
+            keyExtractor={item => item.id.toString()}
+            horizontal={false}
+            numColumns={3}
+          />
+        </View>
+      </ScrollView>
+
 
        {/* Bottom navigation */}
        <View style={styles.bottomNavigation}>
@@ -193,18 +246,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: 60,
+    height: 30,
   },
   bottomIcon: {
-    width: 30,
-    height: 30,
-    margin: 30
+    width: 35,
+    height: 35,
+    margin: 35,
+    marginBottom:10
   },
   bannerContainer: {
     width: wp('100%'),
     height: hp('20%'),
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom:20
   },
   bannerImage: {
     width: '100%',
@@ -218,8 +273,14 @@ const styles = StyleSheet.create({
     paddingVertical: hp('2%'),
     height:185
   },
+  bookListContainer2: {
+    paddingHorizontal: wp('5%'),
+    paddingVertical: hp('2%'),
+    
+  },
   bookItem: {
-    marginRight: wp('4%'),
+    marginRight: 25,
+    marginLeft: 25,
   },
   bookImage: {
     width: 75,
